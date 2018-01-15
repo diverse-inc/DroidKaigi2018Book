@@ -1,0 +1,10 @@
+PREDEF:
+    - preface.re
+
+CHAPS:
+    - （章タイトル）
+    - someone-0.re
+    - someone-1.re
+
+POSTDEF:
+    - postscript.re
