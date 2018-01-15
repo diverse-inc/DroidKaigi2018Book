@@ -3,8 +3,8 @@ PREDEF:
 
 CHAPS:
     - （章タイトル）
-    - someone-0.re
-    - someone-1.re
+        - someone-0.re
+        - someone-1.re
 
 POSTDEF:
     - postscript.re
