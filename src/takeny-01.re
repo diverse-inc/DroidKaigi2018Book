@@ -10,7 +10,7 @@ AndroidでHTTPによるAPI通信を行うときに使うライブラリは OkHtt
 そこで本章では実例を使ったコルーチンの簡単な説明とnasneのAPIを叩いてハードウェア情報や内蔵HDDの情報を取得するクライアントアプリをOkHttp3+Retrofit2+Coroutineを使って作ってみた話を書きます。
 //}
 
-//footnote[nasne-r]["nasne(ナスネ)"は株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。]
+//footnote[nasne-r][本文中に出てくる"PS4", "nasne(ナスネ)"および"torne(トルネ)"は株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。]
 
 == コルーチンとは
 
@@ -61,15 +61,13 @@ launch(UI) {
 
 機器の自動検索はめんどくｓ…今回の目的では別になくてもいいのでやらずにnasneのIPアドレスを直打ちして使うようにします。またあくまでサンプルなので設計は超適当です。
 
-@<comment>{TODO: nasne1台登録済みのアプリのMainActivityと登録フォームのスクショ}
-
 === 準備
 
 Android Studioを起動し新しくプロジェクトを作ります(私はEmpty Activityを使用)。
 
-忘れないうちにPermission(通信を行うので@<code>{<uses-permission android:name="android.permission.INTERNET" />})と依存ライブラリを追加します。
+通信を行うので@<code>{<uses-permission android:name="android.permission.INTERNET" />}と依存ライブラリを追加します。
 
-追加するのは
+追加するライブラリは
 
  * OkHttp3
  * Retrofit2
@@ -89,7 +87,7 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21.1'
 implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
 //}
 
-@<list>{gradle}のうち@<code>{com.squareup}から始まっているものは定番なので特に説明は不要でしょう。
+@<list>{gradle}のうちokhttpとretrofitは定番なので説明を省きます。
 
 @<code>{kotlinx-coroutines-core}, @<code>{kotlinx-coroutines-android}はコルーチンを使うために必要なライブラリです。
 kotlinにおける@<code>{async/await}は他の多くの言語と異なりキーワードでも標準ライブラリの一部でもありません。
@@ -99,3 +97,19 @@ kotlinにおける@<code>{async/await}は他の多くの言語と異なりキー
 とても薄いライブラリなのでコルーチンをある程度学習したら一度読んでみるとよいでしょう。
 
 あとは適当にサポートライブラリなど他に使いたいライブラリがあれば追加してsyncすれば準備完了です。
+
+=== 通信部分を作る
+
+では、早速実装をすすめていきましょう。まずはnasneのAPIの仕様を知る必要がありますが、残念ながら一般には公開されていません。
+nasneはPS4やアプリのクライアントを使って確認する他にnasneのIPアドレスをブラウザに入力してアクセスする方法があります。
+
+ブラウザで@<code>{http://<nasneのIPアドレス>/}にアクセスすると@<code>{http://<nasneのIPアドレス>:64210/nasne_home/index.html}にリダイレクトされます。
+メニューを眺めていくと型番やHDDの情報を見ることができます。つまりブラウザとnasneは何らかのAPIを通じて通信していることになります。
+調べ方はあまり具体的に書くと怒られるかもしれないので書けないですがHTMLやJavaScriptのコードをずっと読んでいくとそれっぽいものを発見できると思います。
+
+=== 結果を表示する
+
+とりあえず適当にレイアウトを組みました。(Design Support Libraryを使用しています。)
+
+//image[screenshot01][レイアウト][scale=0.3]{
+//}
