@@ -53,4 +53,49 @@ launch(UI) {
 
 では、実際にアプリを作りながらどのような動きをするかみていきましょう。
 
-　
+== アプリを作ろう
+
+=== 今回作るアプリ
+
+作るのは「nasneに生えているHTTP APIを叩いてハードウェア情報と内蔵HDD情報を取得して表示する」アプリです。サンプルではminSdkVersion 21で作成します。
+
+機器の自動検索はめんどくｓ…今回の目的では別になくてもいいのでやらずにnasneのIPアドレスを直打ちして使うようにします。またあくまでサンプルなので設計は超適当です。
+
+@<comment>{TODO: nasne1台登録済みのアプリのMainActivityと登録フォームのスクショ}
+
+=== 準備
+
+Android Studioを起動し新しくプロジェクトを作ります(私はEmpty Activityを使用)。
+
+忘れないうちにPermission(通信を行うので@<code>{<uses-permission android:name="android.permission.INTERNET" />})と依存ライブラリを追加します。
+
+追加するのは
+
+ * OkHttp3
+ * Retrofit2
+ * Coroutine
+
+の3種類です。
+
+App Moduleのbuild.gradleに以下のように追記します。バージョン指定は特に問題がなければその時点での最新バージョンでOKです。
+
+//list[gradle][build.gradleに追加するライブラリ群][Gradle]{
+implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21.1'
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21.1'
+implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+//}
+
+@<list>{gradle}のうち@<code>{com.squareup}から始まっているものは定番なので特に説明は不要でしょう。
+
+@<code>{kotlinx-coroutines-core}, @<code>{kotlinx-coroutines-android}はコルーチンを使うために必要なライブラリです。
+kotlinにおける@<code>{async/await}は他の多くの言語と異なりキーワードでも標準ライブラリの一部でもありません。
+@<code>{kotlinx-coroutines-core}はコルーチンそのものを使うためのライブラリ、@<code>{kotlinx-coroutines-android}はAndroidに依存した実装を含んでいます。
+
+次の@<code>{retrofit2-kotlin-coroutines-experimental-adapter}はRetorofit2でコルーチンを扱うためのアダプターでJake神が開発し公開しています。
+とても薄いライブラリなのでコルーチンをある程度学習したら一度読んでみるとよいでしょう。
+
+あとは適当にサポートライブラリなど他に使いたいライブラリがあれば追加してsyncすれば準備完了です。
