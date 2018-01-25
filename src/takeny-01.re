@@ -7,7 +7,7 @@ AndroidでHTTPによるAPI通信を行うときに使うライブラリは OkHtt
 
 またCoroutineはKotlin1.2でProduct Readyであることが宣言され、1.3ではいよいよExperimentalが外れる予定でとりあえず簡単な使い方を知って勉強し始めるにはちょうどいいタイミングかもしれません。
 
-そこで本章では実例を使ったコルーチンの簡単な説明とnasneのAPIを叩いてハードウェア情報や内蔵HDDの情報を取得するクライアントアプリをOkHttp3+Retrofit2+Coroutineを使って作ってみた話を書きます。
+そこで本章ではコルーチンの簡単な説明とnasneのAPIを叩いてハードウェア情報や内蔵HDDの情報を取得するクライアントアプリをOkHttp3+Retrofit2+Coroutineを使って作ってみた話を書きます。
 //}
 
 //footnote[nasne-r][本文中に出てくる"PS4", "nasne(ナスネ)"および"torne(トルネ)"は株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。]
@@ -105,7 +105,97 @@ nasneはPS4やアプリのクライアントを使って確認する他にnasne�
 
 ブラウザで@<code>{http://<nasneのIPアドレス>/}にアクセスすると@<code>{http://<nasneのIPアドレス>:64210/nasne_home/index.html}にリダイレクトされます。
 メニューを眺めていくと型番やHDDの情報を見ることができます。つまりブラウザとnasneは何らかのAPIを通じて通信していることになります。
-調べ方はあまり具体的に書くと怒られるかもしれないので書けないですがHTMLやJavaScriptのコードをずっと読んでいくとそれっぽいものを発見できると思います。
+調べ方やエンドポイントをここに具体的に書くと各方面から怒られるかもしれないので書けないですがHTMLやJavaScriptをずっと読んでいくとそれっぽいものを発見できると思います。
+
+さて、エンドポイントがわかったら実際叩いてみましょう。ハードウェア情報とHDD情報を取得するAPIは特に認証は不要なのでcurlで叩くことができます。
+すると以下のようなレスポンスが得られると思います。(@<list>{nasne-hardware-info-response}, @<list>{nasne-hdd-info-response})
+
+//list[nasne-hardware-info-response][ハードウェア情報APIのレスポンス][JSON]{
+{
+  "errorcode": 0,
+  "hardwareVersion": 1,
+  "productName": "CECH-ZNR1J"
+}
+//}
+
+//list[nasne-hdd-info-response][HDD情報APIのレスポンス][JSON]{
+{
+  "HDD": {
+    "totalVolumeSize": 998373937152,
+    "freeVolumeSize": 330503405568,
+    "usedVolumeSize": 667870531584,
+    "serialNumber": "JA1000101XXXXX",
+    "id": 0,
+    "internalFlag": 0,
+    "mountStatus": 1,
+    "registerFlag": 1,
+    "format": "xfs",
+    "name": "hdd0",
+    "vendorID": "ATA",
+    "productID": "HGST HTS541010A9"
+  },
+  "errorcode": 0
+}
+//}
+
+これをJsonからオブジェクトに変換するためのクラスを定義します。Kotlinには@<code>{data class}があるのですっきり定義することができます。
+なお、HDD情報については使わない項目もあるので今回必要なもののみ定義しています。
+
+//list[nasne-hardware-info-class][ハードウェア情報クラス]{
+data class Hardware(val hardwareVersion: Int, productName: String)
+//}
+
+//list[nasne-hdd-info-class][HDD情報クラス]{
+data class NasneHddInfo(@SerializedName("HDD") val hdd: Hdd, val errorCode: Int)
+data class Hdd(val totalVolumeSize: Long,
+    val freeVolumeSize: Long,
+    val usedVolumeSize: Long,
+    val format: String)
+//}
+
+次にHttpクライアントを実装していきます。
+まずはRetorofitのInterface(@<list>{nasne-api-interface})です。基本的にはRxJavaを使った場合と変わりませんが戻り値の型は@<code>{Deferred<T>}を指定します。
+
+(エンドポイントはここに書くことは控えさせていただきます。@<code>{<<CENCERED>>}を適当なエンドポイントに書き換えてください)
+
+//list[nasne-api-interface][Retorfit用のinterface]{
+interface NasneApi {
+    @GET("<<CENCERED>>")
+    fun getHardwareVersion(): Deferred<NasneHardwareInfo>
+
+    @GET("<<CENCERED>>")
+    fun getInternalHddInfo(): Deferred<NasneHddInfo>
+}
+//}
+
+次にHttpクライアントやRetrofitのインスタンスを作るクラスを用意します(@<list>{client-module})。
+
+//list[client-module][キャプション]{
+class NasneApiClientModule {
+    fun provideHttpClientForNasneApi(isDebug: Boolean): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = if (isDebug) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                }
+            })
+            .build()
+
+    fun provideRetrofitForNasneApi(httpClient: OkHttpClient, baseURL: String): Retrofit =
+        Retrofit.Builder()
+            .client(httpClient).baseUrl(baseURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
+
+    fun provideNasneApi(retrofit: Retrofit): NasneApi =
+        retrofit.create(NasneApi::class.java)
+}
+//}
+
+
 
 === 結果を表示する
 
