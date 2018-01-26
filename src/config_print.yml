@@ -1,0 +1,7 @@
+inherit: ["config.yml"]
+
+# 表紙にするHTMLファイル。ファイル名を指定すると表紙として入る
+cover: _cover_print.tex
+#
+# 表紙に配置し、書籍の影絵にも利用する画像ファイル。省略した場合はnull (画像を使わない)。画像ディレクトリ内に置いてもディレクトリ名は不要(例: cover.jpg)
+coverimage: null
