@@ -2,9 +2,9 @@ PREDEF:
   - preface.re
 
 CHAPS:
-  - [章タイトル]:
-    - someone-0.re
-    - someone-1.re
+  - Kotlin/NativeでDroidKaigiアプリのiOS版を作ってみた:
+    - kikuchy-0.re
+    - kikuchy-1.re
 
 POSTDEF:
   - postscript.re
