@@ -141,11 +141,11 @@ nasneはPS4やアプリのクライアントを使って確認する他にnasne�
 これをJsonからオブジェクトに変換するためのクラスを定義します。Kotlinには@<code>{data class}があるのですっきり定義することができます。
 なお、HDD情報については使わない項目もあるので今回必要なもののみ定義しています。
 
-//list[nasne-hardware-info-class][ハードウェア情報クラス]{
-data class Hardware(val hardwareVersion: Int, productName: String)
+//list[nasne-hardware-info-class][ハードウェア情報クラス][kt]{
+data class Hardware(val hardwareVersion: Int, val productName: String)
 //}
 
-//list[nasne-hdd-info-class][HDD情報クラス]{
+//list[nasne-hdd-info-class][HDD情報クラス][kt]{
 data class NasneHddInfo(@SerializedName("HDD") val hdd: Hdd, val errorCode: Int)
 data class Hdd(val totalVolumeSize: Long,
     val freeVolumeSize: Long,
@@ -155,10 +155,11 @@ data class Hdd(val totalVolumeSize: Long,
 
 次にHttpクライアントを実装していきます。
 まずはRetorofitのInterface(@<list>{nasne-api-interface})です。基本的にはRxJavaを使った場合と変わりませんが戻り値の型は@<code>{Deferred<T>}を指定します。
+@<code>{Deferred<T>}をawaitすると値が返ってくるまでコルーチンが中断されます。
 
 (エンドポイントはここに書くことは控えさせていただきます。@<code>{<<CENCERED>>}を適当なエンドポイントに書き換えてください)
 
-//list[nasne-api-interface][Retorfit用のinterface]{
+//list[nasne-api-interface][Retorfit用のinterface][kt]{
 interface NasneApi {
     @GET("<<CENCERED>>")
     fun getHardwareVersion(): Deferred<NasneHardwareInfo>
@@ -170,7 +171,7 @@ interface NasneApi {
 
 次にHttpクライアントやRetrofitのインスタンスを作るクラスを用意します(@<list>{client-module})。
 
-//list[client-module][キャプション]{
+//list[client-module][ネットワーククライアントクラス][kt]{
 class NasneApiClientModule {
     fun provideHttpClientForNasneApi(isDebug: Boolean): OkHttpClient =
         OkHttpClient.Builder()
@@ -195,7 +196,10 @@ class NasneApiClientModule {
 }
 //}
 
+OkHttpClientオブジェクトとInterfaceからAPIクライアントを作るところは今まで通りです。Retotorfitオブジェクトを作るときに指定する
+CallAdapterに@<code>{CoroutineCallAdapterFactory}を指定します。すると@<code>{Call<T>}が@<code>{Deferred<T>}に変換されます。
 
+これでクライアントの準備はできました。いよいよこれらを使って実際に画面上に出してみましょう。
 
 === 結果を表示する
 
@@ -203,3 +207,39 @@ class NasneApiClientModule {
 
 //image[screenshot01][レイアウト][scale=0.3]{
 //}
+
+IPアドレスを入力し取得ボタンをタップすると型番、世代、ファイルシステム、合計容量、使用容量、空き容量が表示される簡単なアプリです。
+
+//pagebreak
+
+//list[main-activity-click][取得ボタンをタップしたときのListenerの実装][kt]{
+  nasneGetInfoButton.setOnClickListener {
+      val baseUrl = "http://%s:64210".format(nasneIpAddressEditText.tex
+      val retrofit = networkModule
+          .provideRetrofitForNasneApi(httpClient, baseUrl)
+      val api = networkModule.provideNasneApi(retrofit)
+      launch(UI) {
+          try {
+              val hardwareInfo = api.getHardwareVersion().await()
+              val hddInfo = api.getInternalHddInfo().await().hdd
+              nasneModelName.text = hardwareInfo.productName
+　　　　　　    nasneModelVersion.text = hardwareInfo.hardwareVersion.toString()
+              nasneFileSystem.text = hddInfo.format
+              nasneStorageTotalVolume.text = hddInfo.totalVolumeSize.toString()
+              nasneStorageFreeVolume.text = hddInfo.freeVolumeSize.toString()
+              nasneStorageUsageVolume.text = hddInfo.usedVolumeSize.toString()
+          } catch (e: HttpException) {
+              when(e.code()) {
+                  404 -> {
+                      Toast.makeText(this@MainActivity, "nasne Not Found", Toast.LENGTH_LONG).show()
+                  }
+                  else -> {
+                      Toast.makeText(this@MainActivity, "ERROR!", Toast.LENGTH_LONG).show()
+                  }
+              }
+      　　}
+  　　}
+  }
+//}
+
+@<list>{main-activity-click}は取得ボタンをタップした時のclickListenerを抜粋したものです。軽く眺めるだけでコールバックやRxを使った場合とは全く違うことがわかります。
