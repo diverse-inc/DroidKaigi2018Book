@@ -15,7 +15,7 @@ if [ ! -f ./src/images/DroidKaigi_backcover.pdf ]; then
 fi
 
 # コマンド確認
-if type "docker gs" > /dev/null 2>&1; then
+if type docker > /dev/null 2>&1 && type gs > /dev/null 2>&1; then
   docker run --rm -v `pwd`/src:/work vvakame/review /bin/sh -c "cd /work && review-pdfmaker config_print.yml"
   gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=book.pdf ./src/images/DroidKaigi_cover.pdf ./src/book.pdf ./src/images/DroidKaigi_backcover.pdf
   rm ./src/book.pdf
