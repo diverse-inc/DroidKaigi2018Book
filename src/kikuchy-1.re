@@ -4,11 +4,11 @@
 今後Kotlin/Nativeを採用しようと考えておられる皆様の参考になれば良いなと思います。
 
 
-=== CLionのKotlin pluginはまだ完成度が低い
+=== CLionのKotlin/Native pluginはまだ完成度が低い
 
 
-Kotlin/Native開発において、IDEはCLionを使います。CLion向けにKotlin/Nativeのプラグインが提供されているので、それをインストールしておきましょう。
-//footnote[clion][https://www.jetbrains.com/clion/]
+Kotlin/Native開発において、IDEはCLion@<fn>{clion}を使います。CLion向けにKotlin/Nativeのプラグインが提供されているので、それをインストールしておきましょう。
+//footnote[clion][@<href>{https://www.jetbrains.com/clion/}]
 
 これだけで、Kotlin/Androidとあまり変わらない操作感でiOSの開発をすることができます。なんて便利！
 
@@ -29,7 +29,7 @@ Kotlin/Native開発において、IDEはCLionを使います。CLion向けにKot
 Xcodeが抱えているSDKのAPIは@<code>{platform}パッケージ以下に配置されています。
 例えばFoundation.frameworkのAPIは@<code>{platform.Foundation}を、UIKit.frameworkのAPIは@<code>{platform.UIKit}をimportすることで使用できるようになります。
 
-Kotlin/Androidの感覚では、importせずにクラス名をコード中に記述した場合、Quick FIxでimport文を追加する事ができます。しかし現在のKotlin/Nativeプラグインでは、まだこの操作ができません。
+Kotlin/Androidの感覚では、importせずにクラス名をコード中に記述した場合、Quick Fixでimport文を追加する事ができます。しかし現在のKotlin/Nativeプラグインでは、まだこの操作ができません。
 kotlinxパッケージ以下の拡張関数についてはQuick Fixのバルーンが表示されるので、全くできないというわけではないようですが。
 
 
@@ -40,7 +40,7 @@ Kotlin/Andoridの感覚であればCmd + BやCmd + クリックで宣言へジ�
 しかし一部のplatform以下のパッケージには"Cannot find declaration to go"と言われてジャンプできません。
 手元で試したところ、@<code>{platform.UIKit}以下や@<code>{platform.Foundation}以下のAPIにはジャンプできず、@<code>{platform.darwin}以下のAPIにはジャンプできました。
 
-コードジャンプはできませんが、@<code>{platform.UIKit}の宣言は@<code>{~/.konan/kotlin-native-macos-0.5/klib/platform/iphone/UIKit/linkata/package_platform.UIKit.knm}で見ることができました。プラットフォームやバージョンによっては別の場所に置かれている可能性もあるので、適宜読み替えてください。
+コードジャンプはできませんが、@<code>{platform.UIKit}の宣言は ~/.konan/kotlin-native-macos-0.5/klib/platform/iphone/UIKit/linkata/package_platform.UIKit.knm で見ることができました。プラットフォームやバージョンによっては別の場所に置かれている可能性もあるので、適宜読み替えてください。
 
 
 === IDEと統合されたデバッガが欲しい
@@ -59,14 +59,17 @@ GUIからのブレークポイント操作に慣れきってしまったゆと�
 
 ネガティブな感想が続きましたが、ポジティブな感想もあります。
 
-Kotlin/Androidの利点の一つでもあるのですが、Kotlinは言語機能と一緒に提供されるKotlin Standerd Library (kotlin-stdlib)があり、しかも使い勝手が良いのです。私は特にコレクション周りの拡張関数（@<code>{map}や@<code>{find}など）には頼り切って生きています。
+Kotlin/Androidの利点の一つでもあるのですが、Kotlinは言語機能と一緒に提供されるKotlin Standerd Library (kotlin-stdlib)があり、しかも使い勝手が良いのです。私は特にコレクション周りの拡張関数（@<code>{map}や@<code>{find}など）に頼り切って生きています。
 Kotlin/Nativeでもこれらが使用可能です。
 今回のDroidKaigi2018アプリでも、セッションの一覧を開始時刻ごとに分けるところなどで大いに使用しています。
 
-//source[src/main/kotlin/sessionslist/SessionsDataSource.kt]{
+//list[kotlinstdlib][src/main/kotlin/sessionslist/SessionsDataSource.kt を一部改変][kt]{
 private val groupedSessions: List<Pair<Date, List<Session>>> =
-        initialSessions.groupBy { it.startTime }.toList().sortedBy { it.first.getTime().toLong() }
-}
+        initialSessions  // List<Session>
+            .groupBy { it.startTime }
+            .toList()
+            .sortedBy { it.first.getTime().toLong() }
+//}
 
 同じことはSwiftでもできるのでしょうが、私のSwift習熟度では、どう書けば良いのかぱっと思いつきません。
 もし現在のAndroidアプリと同じくらいの簡単さでKotlin/Nativeを使用したiOSアプリ開発を始めることができるならば、Kotlinに慣れたエンジニアはKotlin/Nativeを使用したほうが圧倒的に高い生産性を発揮できるでしょう。
