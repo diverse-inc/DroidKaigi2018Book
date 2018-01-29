@@ -62,7 +62,7 @@ DroidKaigi2018iOSでは、JSONのパースに@<code>{NSJSONSerialization}を使�
 // json = { key: 1234 }
 val value: Long = json.valueForKey("key").uncheckedCast()
 
-println(value)                      // 1234
+println(value)                    // 1234
 println(value == 1234L)    // false
 //}
 

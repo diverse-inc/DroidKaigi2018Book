@@ -76,8 +76,10 @@ private val groupedSessions: List<Pair<Date, List<Session>>> =
 
 また、今回のDroidKaigi2018iOSで使っている箇所はありませんが、Delegated PropertiesやClass Delegationなど、便利に使える言語機能があることもプラスになるでしょう。
 
-そして、今はまだ使えませんが、Kotlin/NativeでCommon Moduleを使用可能になれば、メインのロジックをAndroidアプリと共有することが可能そうです。
+そして、今はまだ使えませんが、Kotlin/NativeでMultiplatform Projectを使用可能になれば、メインのロジックをAndroidアプリと共有することが可能そうです。
 ストレージ操作やネットワーク通信などはそれぞれのOSごとに実装が必要ですが、APIを統一したライブラリが登場すれば状況が変わるでしょう。
-また、Co-routineについてもiOSのGCDを使用したContextを簡単に使用できるようになると、通信の処理などが更に楽になりそうです。
+また、CoroutineについてもiOSのGCDを使用したcontextを簡単に使用できるようになると、通信の処理などが更に楽になりそうです。
+
+なにより、Swiftのprotocolと違ってKotlinのinterfaceではジェネリクスを使用できます！　Type Erasureに悩むこともありません！
 
 Kotlin/Nativeの未来は明るい！！
