@@ -12,14 +12,22 @@ AndroidでHTTPによるAPI通信を行うときに使うライブラリは OkHtt
 
 //footnote[nasne-r][本文中に出てくる"PS4", "nasne(ナスネ)"および"torne(トルネ)"は株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。]
 
+== 書いている人について
+
+=== Yoshihisa
+
+2018年1月現在、YYCのAndroidアプリを作っている中の人。昨年4月からAndroid開発をはじめてもうすぐ1年。
+
+最近の口癖: ライフサイクル爆破したい(回転させると時々クラッシュする画面とそのトレースを死んだ魚のような目で見ながら)
+
+Twitter: @bomneko_attack
+
 == コルーチンとは
 
 一言でいえば「中断・再開可能な関数」です。これだけではわかりにくいですし、また詳しく説明するとそれだけで薄い本一冊書けてしまうレベルなので具体的な例でみてみましょう。
 
 @<list>{api-connect-1}はAPIを叩いてnasneのハードウェア情報を取得し型番をトーストを使って表示するコードをOkHttpとRetrofitのみで実装したコードです。
 コールバックで結果を受け取るという一般的な非同期処理における方法ですね。
-
-//pagebreak
 
 //list[api-connect-1][OkHttpとRetorfitのみで実装した通信部分][kotlin]{
 api.getHardwareInfo().enqueue(object : Callback<Info> {
@@ -111,31 +119,31 @@ nasneはPS4やアプリのクライアントを使って確認する他にnasne�
 すると以下のようなレスポンスが得られると思います。(@<list>{nasne-hardware-info-response}, @<list>{nasne-hdd-info-response})
 
 //list[nasne-hardware-info-response][ハードウェア情報APIのレスポンス][JSON]{
-{
-  "errorcode": 0,
-  "hardwareVersion": 1,
-  "productName": "CECH-ZNR1J"
-}
+  {
+    "hardwareVersion": 1,
+    "productName": "CECH-ZNR1J",
+    "errorcode": 0
+  }
 //}
 
 //list[nasne-hdd-info-response][HDD情報APIのレスポンス][JSON]{
-{
-  "HDD": {
-    "totalVolumeSize": 998373937152,
-    "freeVolumeSize": 330503405568,
-    "usedVolumeSize": 667870531584,
-    "serialNumber": "JA1000101XXXXX",
-    "id": 0,
-    "internalFlag": 0,
-    "mountStatus": 1,
-    "registerFlag": 1,
-    "format": "xfs",
-    "name": "hdd0",
-    "vendorID": "ATA",
-    "productID": "HGST HTS541010A9"
-  },
-  "errorcode": 0
-}
+  {
+    "HDD": {
+      "id": 0,
+      "internalFlag": 0,
+      "mountStatus": 1,
+      "registerFlag": 1,
+      "format": "xfs",
+      "name": "hdd0",
+      "vendorID": "ATA",
+      "productID": "Hitachi HTS54505",
+      "serialNumber": "XXXXXXXXXXXXX",
+      "usedVolumeSize": 118712127488,
+      "freeVolumeSize": 379808972800,
+      "totalVolumeSize": 498521100288
+    },
+    "errorcode": 0
+  }
 //}
 
 これをJsonからオブジェクトに変換するためのクラスを定義します。Kotlinには@<code>{data class}があるのですっきり定義することができます。
@@ -214,7 +222,7 @@ IPアドレスを入力し取得ボタンをタップすると型番、世代、
 
 //list[main-activity-click][取得ボタンをタップしたときのListenerの実装][kt]{
   nasneGetInfoButton.setOnClickListener {
-      val baseUrl = "http://%s:64210".format(nasneIpAddressEditText.tex
+      val baseUrl = "http://%s:64210".format(nasneIpAddressEditText.text.toString())
       val retrofit = networkModule
           .provideRetrofitForNasneApi(httpClient, baseUrl)
       val api = networkModule.provideNasneApi(retrofit)
@@ -229,17 +237,50 @@ IPアドレスを入力し取得ボタンをタップすると型番、世代、
               nasneStorageFreeVolume.text = hddInfo.freeVolumeSize.toString()
               nasneStorageUsageVolume.text = hddInfo.usedVolumeSize.toString()
           } catch (e: HttpException) {
-              when(e.code()) {
-                  404 -> {
-                      Toast.makeText(this@MainActivity, "nasne Not Found", Toast.LENGTH_LONG).show()
-                  }
-                  else -> {
-                      Toast.makeText(this@MainActivity, "ERROR!", Toast.LENGTH_LONG).show()
-                  }
-              }
-      　　}
+              Toast.makeText(this@MainActivity, "ERROR!", Toast.LENGTH_LONG).show()
+          }
   　　}
   }
 //}
 
-@<list>{main-activity-click}は取得ボタンをタップした時のclickListenerを抜粋したものです。軽く眺めるだけでコールバックやRxを使った場合とは全く違うことがわかります。
+@<list>{main-activity-click}は取得ボタンをタップした時のClickListenerを抜粋したものです。@<code>{launch(UI)}ブロックで囲まれた部分がコルーチンです。
+このようにAPI通信を同期的にすっきり書くことができます。例外処理も@<code>{try-catch}を使うことができます。
+
+@<code>{launch}は新しくコルーチンを起動し@<code>{Job}を返します。
+引数はコルーチンコンテキストといい、コルーチンの実行環境を指定します。このコードでは@<code>{kotlinx.coroutines.experimental.android}が提供する@<code>{UI}を指定し、
+UIスレッドでコルーチンが起動するように指定しています。
+
+@<code>{Job}は@<code>{cancel()}を呼ぶことでキャンセルすることができます。また、@<code>{join()}を呼ぶことでジョブの完了を待つことができます。
+
+このアプリではキャンセル機能は付けないので戻り値を受け取らずコルーチンを起動しています。
+
+コルーチン内での例外は@<code>{try-catch}を使って処理することができるので囲い、@<list>{nasne-api-interface}で定義したAPI用のメソッドを呼んで各種結果を取得します。
+メソッドを呼ぶと@<code>{Deferred<T>}を返すのでそれを@<code>{await()}するとレスポンスが返ってくるまでコルーチンの実行が中断されます。
+レスポンスが返ってくると実行が再開され結果を取得することができます。発生した例外もawaitし、再開したタイミングで発火します。
+なお、コルーチンが中断中であってもメインスレッドは止まらないのでコルーチンの外側に処理を書く場合は注意が必要です。
+
+これでアプリの実装はおわりました。実際に実行してみましょう。
+
+//image[screenshot02][エミュレータで実行した結果][scale=0.3]{
+//}
+
+正しく表示されたら完成です！
+
+このようにコルーチンを使うと非同期処理におけるPromiseパターンをRxよりも簡単に書くことができます。
+
+== Rxの立場は…取って代わられるの？
+
+コルーチンは非同期におけるPromiseパターンを同期的に書けるのでReactiveXと比較され、先人たちの啓蒙によりかなり少なくなったとは言えこのような勘違いされることがあります。
+
+確かに、Androidの世界ではコールバックが使いづらいためにRxをPromiseとして活用していることが多いです。
+しかし、そもそもRxは「リアクティブプログラミングのためのフレームワーク」でありコルーチンとは比較対象になりません。
+
+本書では@<code>{Call<T>}を@<code>{Deferred<T>}に変換するAdapterを使用しましたが、Rxとコルーチンは組み合わせて使用することができます。
+組み合わせるともっと便利になるシーンがあると思いますので必要に応じて使い分けたり組み合わせたりしてみましょう。
+
+== まとめ
+
+Kotlin1.1で追加され1.3でいよいよExperimentalが取れ、実戦投入可能になる予定のコルーチンを使って簡単なアプリを作ってみました。
+今から勉強してコルーチン時代に備えましょう！
+
+また詳しく書けなかったnasneの非公開APIも録画中の番組や録画リストが取得できたりするので株式会社ソニー・インタラクティブエンタテインメント様に怒られない程度に調べて遊んでみるとおもしろいでしょう。
