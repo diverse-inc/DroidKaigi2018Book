@@ -7,21 +7,21 @@ Kotlin/Nativeに挑戦されるみなさまがこうしたところを踏み抜�
 == FoundationだけimportしてもNSIndexPathのrowやselctionを参照できない
 
 @<code>{UITableView}（Androidの@<code>{ListView}や@<code>{RecyclerView}に相当）を扱う場合、@<code>{NSIndexPath}@<fn>{aboutNSIndexPath}は避けて通れません。
-//footnote[aboutNSIndexPath][@<code>{UITableView}は大枠としてセクションを、その中に各行を抱えていて、どのセクションのどの行なのか、ということを表現するために@<code>{NSIndexPath}という特殊なデータクラスのような物がある]
+//footnote[aboutNSIndexPath][@<code>{UITableView}は大枠としてセクション、その中に各行を抱えています。作成しようとしているセルはどのセクションのどの行なのか、などを表現するために@<code>{NSIndexPath}という入れ子になった配列のどこにデータがあるのかを示すための専用クラスが用意されています。]
 
 @<code>{NSIndexPath}は@<code>{Foundation}で実装されているクラスです。使用する際は
-@<code>{platform.Foundation.NSIndexPath}をimportします。
+@<br>{}@<code>{platform.Foundation.NSIndexPath}をimportします。
 
 その状態でメンバの@<code>{section}や@<code>{row}を参照しようとすると、なんとコンパイルエラーに。補完候補にも表示されません。
 Foundationのドキュメント@<fn>{NSIndexPathDoc}には@<code>{section}も@<code>{row}も記述があるのに、なぜ！？
-//footnote[NSIndexPathDoc][https://developer.apple.com/documentation/foundation/nsindexpath?language=objc]
+//footnote[NSIndexPathDoc][@<href>{https://developer.apple.com/documentation/foundation/nsindexpath?language=objc}]
 
 実は@<code>{section}と@<code>{row}はFoundationではなくUIKitで宣言されている拡張メンバ@<fn>{declarationOfRow}なのです。
 そのため、@<code>{platform.UIKit.section}や@<code>{platform.UIKit.row}をimportしないと使用できません。
-//footnote[declarationOfRow][UIKitの@<code>{NSIndexPath+UIKitAdditions.h}に宣言があります]
+//footnote[declarationOfRow][UIKitの@<code>{NSIndexPath+UIKitAdditions.h}に宣言があります。実はドキュメントの中ほど『Using Special Node Names』の見出しには『UIKitとAppKitが、index pathのうち1段目と2段目にアクセスするための便利な名前を提供しているよ』と、ヒントらしきことが書いてある…]
 
 私が遭遇したのはNSIndexPathの例のみですが、他にもこのようにパッケージをまたいで宣言されている拡張メンバやメソッドがあるかもしれません。
-ドキュメントには平気な顔で大元の宣言があるパッケージに分類されているものもあるので、「おかしいな」と思ったら、Objective-Cでコードを書いて、宣言元にジャンプしてどのパッケージに所属するものなのかを確認したほうが良さそうです。
+ドキュメントには大元の宣言があるパッケージに記載されているものもあるので、「おかしいな」と思ったら、Objective-Cでコードを書いて、宣言元にジャンプしてどのパッケージに所属するものなのかを確認したほうが良さそうです。あとドキュメントをちゃんと読みましょう。
 
 または初めから、@<code>{platform.Foundation.*}と@<code>{platform.UIKit.*}をimportしておいてしまうとかでも良いかもですね。
 
@@ -62,7 +62,7 @@ DroidKaigi2018iOSでは、JSONのパースに@<code>{NSJSONSerialization}を使�
 // json = { key: 1234 }
 val value: Long = json.valueForKey("key").uncheckedCast()
 
-println(value)                    // 1234
+println(value)             // 1234
 println(value == 1234L)    // false
 //}
 

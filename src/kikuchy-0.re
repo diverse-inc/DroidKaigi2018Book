@@ -9,7 +9,7 @@
 == 経緯
 
 Androidアプリ開発の際、弊社ではKotlinを開発言語とすることが増えてきました。
-かくいう私もKotlin大好きなエンジニアの一人。というかKotlinを一番最初に導入した張本人でもあります（まだStableではなかった、M13くらいのときに入れました！）。
+かくいう私もKotlin大好きなエンジニアの一人。というかKotlinを一番最初にプロダクトに導入した張本人でもあります（まだStableではなかった、M13くらいのときに入れました！）。
 
 近年、Kotlin/Nativeが公表され、iOSやWebAssemblyの開発にもKotlinを使用できる兆しが見えてきています。もしこれが広く使われるようになれば、Kotlinだけでスマートフォンアプリ、Webのフロント、サーバサイド、果ては組み込みプログラムまで書けてしまうことになります。激アツですね！
 
@@ -44,6 +44,7 @@ Kotlin/NativeでiOS開発を試したい！
  * お伝えしないこと
  ** 開発の初め方（良い記事があるのでそちらを御覧ください@<fn>{startguid1}@<fn>{startguid2}）
  ** iOS開発の知識 
+ ** Kotlin/Nativeの基本的なところ
  
 //footnote[startguid1][@<href>{https://qiita.com/noripi/items/4ee969c48b3da5ca6fbd}]
 //footnote[startguid2][@<href>{https://qiita.com/oboenikui/items/07481c6f44fe3e2c4440}]
@@ -55,6 +56,6 @@ DroidKaigi2018iOSリポジトリを作った時点、つまり開発を始めた
 
  * Kotlin歴2年弱
  * Android開発歴2年くらい
- * iOS開発歴1年くらい（Objective-C, Swift Titaniumでの歴の合計）
+ * iOS開発歴1年くらい（Objective-C, Swift, Titaniumでの歴の合計）
  * Kotlin/Native歴1日弱
  

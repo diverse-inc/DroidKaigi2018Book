@@ -1,8 +1,9 @@
 = 試して感じたこと
 
+//lead{
 2018年1月末現在（原稿執筆当時）、おそらくDroidKaigi2018iOSを超える規模のKotlin/Nativeで作られたiOSアプリの事例は国内では存在しないと思います。
-今後Kotlin/Nativeを採用しようと考えておられる皆様の参考になれば良いなと思います。
-
+今後Kotlin/Nativeを採用しようと考えておられる皆様の参考になれば幸いです。
+//}
 
 == CLionのKotlin/Native pluginはまだ完成度が低い
 
@@ -36,9 +37,11 @@ kotlinxパッケージ以下の拡張関数についてはQuick Fixのバルー�
 === 一部のplatformパッケージ以下の宣言にコードジャンプできない
 
 例えば@<code>{UITableView}などの宣言がどのような形になっているのか見てみたいとしましょう。
-Kotlin/Andoridの感覚であればCmd + BやCmd + クリックで宣言へジャンプすると思います。
+Kotlin/Andoridの感覚であれば@<code>{Cmd + B}や@<code>{Cmd + クリック}で宣言へジャンプすると思います。
 しかし一部のplatform以下のパッケージには"Cannot find declaration to go"と言われてジャンプできません。
 手元で試したところ、@<code>{platform.UIKit}以下や@<code>{platform.Foundation}以下のAPIにはジャンプできず、@<code>{platform.darwin}以下のAPIにはジャンプできました。
+
+//image[kikuchy_01][UIViewControllerの宣言にジャンプできない]
 
 コードジャンプはできませんが、@<code>{platform.UIKit}の宣言は ~/.konan/kotlin-native-macos-0.5/klib/platform/iphone/UIKit/linkata/package_platform.UIKit.knm で見ることができました。プラットフォームやバージョンによっては別の場所に置かれている可能性もあるので、適宜読み替えてください。
 
@@ -55,11 +58,11 @@ CLionからiPhoneで動いているプロセスへのアタッチはできない
 GUIからのブレークポイント操作に慣れきってしまったゆとり世代の私としては、CLionからデバッグできるようになることを期待したいと思います。
 
 
-== Kotlinのstdlibの機能を使用できるので捗る
+== Kotlinの言語機能やstdlibの機能を使用できるので捗る
 
 ネガティブな感想が続きましたが、ポジティブな感想もあります。
 
-Kotlin/Androidの利点の一つでもあるのですが、Kotlinは言語機能と一緒に提供されるKotlin Standerd Library (kotlin-stdlib)があり、しかも使い勝手が良いのです。私は特にコレクション周りの拡張関数（@<code>{map}や@<code>{find}など）に頼り切って生きています。
+Kotlin/Androidでも利点の一つとなっているのですが、Kotlinは言語機能と一緒に提供されるKotlin Standerd Library (kotlin-stdlib)の使い勝手がめちゃくちゃ良いのです。私は特にコレクション周りの拡張関数（@<code>{map}や@<code>{find}など）に頼り切って生きています。
 Kotlin/Nativeでもこれらが使用可能です。
 今回のDroidKaigi2018アプリでも、セッションの一覧を開始時刻ごとに分けるところなどで大いに使用しています。
 
@@ -71,7 +74,7 @@ private val groupedSessions: List<Pair<Date, List<Session>>> =
             .sortedBy { it.first.getTime().toLong() }
 //}
 
-同じことはSwiftでもできるのでしょうが、私のSwift習熟度では、どう書けば良いのかぱっと思いつきません。
+同じことはSwiftでもできるのでしょうが、私のSwift習熟度では、Swiftでどう書けばこれに相当する見通しの良いコードになるのか、ぱっと想像ができません。
 もし現在のAndroidアプリと同じくらいの簡単さでKotlin/Nativeを使用したiOSアプリ開発を始めることができるならば、Kotlinに慣れたエンジニアはKotlin/Nativeを使用したほうが圧倒的に高い生産性を発揮できるでしょう。
 
 また、今回のDroidKaigi2018iOSで使っている箇所はありませんが、Delegated PropertiesやClass Delegationなど、便利に使える言語機能があることもプラスになるでしょう。
