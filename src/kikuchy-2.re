@@ -1,8 +1,9 @@
 = Kotlin/Native iOS開発でハマりやすいところ
 
+//lead{
 実際にハマって解決したことを共有します。
 Kotlin/Nativeに挑戦されるみなさまがこうしたところを踏み抜かぬよう…
-
+//}
 
 == FoundationだけimportしてもNSIndexPathのrowやselctionを参照できない
 
