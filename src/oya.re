@@ -2,10 +2,9 @@
 
 == 背景
 
-Swift3.0がで始めた2016年から1年半、筆者はiOSアプリ開発に従事していました。InterfaceBuilderでのGUIレイアウトも慣れてきて、アプリのデザイン変更にもすばやく対応できるようになったと思い込んでいます。
-そんなある日、上司から呼び出され、「◯◯さん、来月からAndroid開発よろしくお願いします。」と、突然Androidアプリ開発できる好機を得ました。
-そこで筆者がAndroid入門するにあたって、iOSのAutoLayoutの知識を活用してUIを構成できるConstraintLayoutに焦点をあて、GUIレイアウトの基本的な機能の比較を図解してまとめてみました。
-
+2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayoutが発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
+ちょうど1年前の2017年2月にConstraintLayout 1.0がリリースされ、現在では1.1.0-beta4までリリースされており、まもなく1.1.0のリリースがされようと差し迫っています。
+そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutからみたConstraintLayoutの基本的なレイアウトの操作方法と、さらにConstraintLayout 1.1.0に加わる機能について触れていきます。
 
 == 環境
 
@@ -14,6 +13,8 @@ Swift3.0がで始めた2016年から1年半、筆者はiOSアプリ開発に従�
 * Xcode 9.2
 
 * Android Stadio 3.0
+
+* ConstraintLayout 1.1.0-beta4
 
 
 == AutoLayoutのあれ、ConstraintLayoutでどうやるの？
@@ -31,7 +32,7 @@ Xcodeでは、viewを選択後、画面右下のアイコン @<icon>{XcodeIconNe
 //image[AndroidStudioNewConstraints][AndroidStudio,制約追加][scale=0.40]{
 //}
 
-アスペクト比率の追加変更は、選択したviewのlayout_widthまたはlayout_heightのいずれかがmatch_parentに指定した際に、@<b>{Attributes} 窓左上に三角が表示されます。それをクリックすると右下に入力欄が表示され追加変更できるようになります。(@<img>{AndroidStudioNewConstraintsAspectRatio})
+アスペクト比率の追加変更は、選択したviewのlayout_widthまたはlayout_heightのいずれかがwrap_content以上の幅を持つ際に、Attributes窓左上に @<b>{三角} が表示されます。それをクリックすると右下に入力欄が表示され追加変更できるようになります。(@<img>{AndroidStudioNewConstraintsAspectRatio})
 
 //image[AndroidStudioNewConstraintsAspectRatio][AndroidStudio,アスペクト比率追加][scale=0.40]{
 //
