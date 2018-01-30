@@ -66,7 +66,7 @@ Kotlin/Androidでも利点の一つとなっているのですが、Kotlinは言
 Kotlin/Nativeでもこれらが使用可能です。
 今回のDroidKaigi2018アプリでも、セッションの一覧を開始時刻ごとに分けるところなどで大いに使用しています。
 
-//list[kotlinstdlib][src/main/kotlin/sessionslist/SessionsDataSource.kt を一部改変][kt]{
+//list[kotlinstdlib][src/main/kotlin/sessionslist/SessionsDataSource.kt を一部改変][kotlin]{
 private val groupedSessions: List<Pair<Date, List<Session>>> =
         initialSessions  // List<Session>
             .groupBy { it.startTime }
@@ -80,7 +80,7 @@ private val groupedSessions: List<Pair<Date, List<Session>>> =
 また、今回のDroidKaigi2018iOSで使っている箇所はありませんが、Delegated PropertiesやClass Delegationなど、便利に使える言語機能があることもプラスになるでしょう。
 
 そして、今はまだ使えませんが、Kotlin/NativeでMultiplatform Projectを使用可能になれば、メインのロジックをAndroidアプリと共有することが可能そうです。
-ストレージ操作やネットワーク通信などはそれぞれのOSごとに実装が必要ですが、APIを統一したライブラリが登場すれば状況が変わるでしょう。
+ストレージ操作やネットワーク通信などはそれぞれのOSごとに実装が必要ですが、APIを統一し、それぞれのOS用の実装を持ったライブラリが登場すれば状況が変わるでしょう。
 また、CoroutineについてもiOSのGCDを使用したcontextを簡単に使用できるようになると、通信の処理などが更に楽になりそうです。
 
 なにより、Swiftのprotocolと違ってKotlinのinterfaceではジェネリクスを使用できます！　Type Erasureに悩むこともありません！

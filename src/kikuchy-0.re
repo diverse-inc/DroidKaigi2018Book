@@ -6,6 +6,13 @@
 @<href>{https://github.com/kikuchy/DroidKaigi2018iOS}
 //}
 
+
+== 書いている人
+
+Twitter: @<href>{https://twitter.com/kikuchy, @kikuchy}
+
+今回のDroidKaigiには3本のCfPを提出して全部落ちました。
+
 == 経緯
 
 Androidアプリ開発の際、弊社ではKotlinを開発言語とすることが増えてきました。
