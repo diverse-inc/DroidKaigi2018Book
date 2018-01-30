@@ -2,10 +2,10 @@
 
 == 背景
 
-2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayoutが発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
-ちょうど1年前の2017年2月にConstraintLayout 1.0がリリースされ、現在では1.1.0-beta4までリリースされており、まもなく1.1.0のリリースがされようと差し迫っています。
-そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutからみたConstraintLayoutの基本的なレイアウトの操作方法と、さらにConstraintLayout 1.1.0で加わる新機能について触れていきます。
-
+2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayout@<fn>{DocsConstraintLayout}が発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
+ちょうど1年前の2017年2月にConstraintLayout 1.0がリリースされ、現在では1.1.0-beta4までリリースされており、まもなく1.1のリリースがされようと差し迫っています。
+そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutの知見を駆使して、ConstraintLayoutを使ったGUI上の基本的なレイアウトの操作方法と、ConstraintLayout 1.1で加わる新機能について触れていきます。
+//footnote[DocsConstraintLayout][@<href>{https://developer.android.com/reference/android/support/constraint/ConstraintLayout.html}]
 
 == 環境
 
@@ -13,7 +13,7 @@
 
 * Xcode 9.2
 
-* Android Stadio 3.0
+* Android Stadio 3.1 Preview 9
 
 * ConstraintLayout 1.1.0-beta4
 
@@ -52,6 +52,23 @@ Xcodeでは、複数のviewを @<b>{⌘+クリック} で選択後、画面右�
 //}
 
 
+=== 等幅・等高の追加
+
+TODO: Chainの説明
+
+//footnote[DocsChain][@<href>{https://developer.android.com/reference/android/support/constraint/ConstraintLayout.html#Chains}]
+
+
+=== Priority
+
+AutoLayoutでは、制約毎にPriorityを 1~1000 の数値で指定して適用する制約に優先度を付与することができますが、ConstraintLayoutでは同種の制約を複数付与することができず、制約自体にPriorityの概念がありません。
+しかし、ConstraintLayout 1.1で Barriar@<fn>{DocsBarriar} が追加されました。
+
+TODO: Barrierの説明・サンプル
+
+//footnote[DocsBarriar][@<href>{https://developer.android.com/reference/android/support/constraint/Barrier.html}]
+
+
 == ConstraintLayoutでできること
 
 === Circular Positioning(1.1~)
@@ -66,29 +83,22 @@ Xcodeでは、複数のviewを @<b>{⌘+クリック} で選択後、画面右�
 //}
 
 
-=== Organize
-
-TODO: 
-
-=== Chain
-
-TODO: 
-
-=== Guildeline
-
-TODO: 
-
-
 == ConstraintLayoutでできないこと
 
-=== priority
+=== 階層が異なるViewとの制約
 
-TODO:
+突然ですが、@<img>{XcodeSamplePopup}右 のようなレイアウトを組むとき、ポップアップの枠からはみ出してるポップアップ右上の閉じるボタンにどのような制約をかけるべきか悩んだことありませんか？
+筆者の場合、@<img>{XcodeSamplePopup}左 のように、閉じるボタンを画面中央に配置したポップアップと同じ階層に配置し、ポップアップの右上に整列後はみ出す分のネガティブ値を指定します。
 
-=== viewgroup外のコンポーネントとの制約
+//image[XcodeSamplePopup][Xcode,ポップアップ][scale=0.40]{
+//}
 
-TODO:
+ここで、この閉じるボタンの配置階層を一つ上にあげようとした場合、AutoLayoutではポップアップと上記と同じように制約を追加することが可能でます。
+しかし、ConstraintLayoutでは親と同階層のViewにのみ制約を付与が許されていないため、階層を意識したLayoutをする必要があります。
+
 
 == まとめ
 
-TODO: 
+ConstraintLayoutを使って、Androidの基本的なレイアウトの操作方法を理解することができました。
+コードに触れることなくGUIのみで操作できることで、デザイナーなどの非エンジニアでも作業することへの敷居がだいぶ低くなったのではないでしょうか？。
+また、ConstraintLayoutには本章で触れなかった機能がまだあります。まだConstraintLayoutに触れていない方は、ぜひお手元のAndroidStudioで試してみてください。
