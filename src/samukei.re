@@ -1,21 +1,26 @@
 = Flutterやってみた
 
+== 書いている人
+Twitter: @<href>{https://twitter.com/samukei, @samukei}
+
+YoubrideのiOS/Android/Server-sideをふんわりやってます。
+
 == Flutter とは？
 iOS/Androidのクラスプラットフォーム開発を実現することができるGoogle発のフレームワークです。
 言語としてはDart(生きとったんかワレ)で記述していきます。
 
-== まずIDEを設定する
-IDEに甘えていく勢のため、IDEを設定していきます。
+== IDEを設定する
+IDEに甘えていく勢のため、最初にIDEを設定していきます。
 IDEとしては、Android Studio、IntelliJ Idea CEなどありますが、今回は`IntelliJ Idea CE`にしました。
-Flutter用の便利なプラグインが存在するため、そちらを設定していきます。
+`IntelliJ Idea CE`向けの便利なFlutterプラグインが存在するため、そちらを設定していきます。
 
 ==== Flutterプラグインの導入手順
-まず`IntelliJ Idea CE`を起動してPreferences > Plugins > "Browse repositories…" を選択します。
+`IntelliJ Idea CE`を起動してPreferences > Plugins > "Browse repositories…" を選択します。
 表示された画面で 'Flutter' と入力してFlutterプラグインをインストールします。
 
 ==== Flutter SDKの導入
 Flutterで開発するためにはSDKが必要となります。
-本来であればコマンドで行うところですが、前述のFlutterプラグインであればGUIでインストール可能です。@<br>{}
+本来であればコマンドで行うところですが、前述のFlutterプラグインであればGUIでインストール可能です。
 
 ===== GUIでのインストール手順
  1. `IntelliJ Idea CE`を再起動して"Create New Project"を選択します。
@@ -34,9 +39,10 @@ Flutterで開発するためにはSDKが必要となります。
 注意することは、Javaのパッケージとして利用されるOrganizationには "-(ハイフン)" を含むと駄目ということくらいです。@<br>{}
 作成されたプロジェクトにはサンプルコードが含まれているので、こちらをベースに実装すると楽に始められます。
 
-//image[NewProject][新規プロジェクト][scale=0.40]{
+//image[NewProject][新規プロジェクト][scale=0.70]{
 //}
 
+//pagebreak
 
 === JSONの取得の実装
 Dartではasync/awaitがあるので活用していきます。
@@ -64,16 +70,16 @@ static Future<Sessions> getSessions() async { // async
           .onDone(() => completer.complete(Sessions.parse(JSON.decode(result))));
         }
       })
-      .catchError((e) {
-    print(e);
-  });
+      .catchError((e) => print(e) }); // エラー処理(雑に表示のみ)
   // CompleterのFutureを返却
   return completer.future;
 }
 //}
 
+//pagebreak
+
 === レスポンスを受けるデータ型の実装
-Dart Conf Appを参考にJSONのレスポンスを受けるデータ型を実装していきます。
+dartの@<href>{https://github.com/dart-lang/conference_app, conference_app}を参考にJSONのレスポンスを受けるデータ型を実装していきます。
 
 //list[response][class Room][Dart]{
 class Room {
@@ -104,9 +110,12 @@ Dartには "source_gen" というデータ型のシリアライザ／デシリ�
 規模的にも導入、学習コストのほうがかかりそうだったので、今回は利用しませんでした。
 //}
 
+//pagebreak
+
 === 画面の実装
 UIはWidgetとWidgetの状態から構築されます。
-今回はSessionを表示するので、SessionのWidget、Stateを定義します。
+//footnote[Widget][WidgetにはStatefulWidget(状態を持つWidget)とStatelessWidget(状態を持たないWidget)があります。・・・が今回は触れません。]
+今回はSessionを表示するので、まずはSessionのWidget、Stateを定義します。
 
 //list[StatefulWidget][class SessionsPage][Dart]{
 class SessionsPage extends StatefulWidget {
@@ -117,33 +126,26 @@ class SessionsPage extends StatefulWidget {
 
 // 状態は同じファイルで定義したため、Private指定
 class _SessionsPageState extends State<SessionsPage> {
-}
 //}
 
+次にレイアウトを定義していきます。
 Flutterではレイアウト用のxmlなどではなく、Viewの構築はコードで行っています。
-今回はセクションの一覧を表示するので、ListViewを作成します。
-なお、一部省略していますので、全体はリポジトリを参照ください。@<fn>{github}
+今回はセッションの一覧を表示するので、ListViewを作成します。
+なお、ページの都合により大分省略していますので、全体はリポジトリを参照ください。@<fn>{github}
 
-//list[state][class _SessionsPageState, class _SectionItem][Dart]{
+//list[state][一覧の生成][Dart]{
 class _SessionsPageState extends State<SessionsPage> {
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        // ナビゲーションエリアのタイトル指定
-        title: new Text(widget.title),
-      ),
       body: new FutureBuilder<Sessions>(
-          // futureを待ち受け
-          future: DroidKaigiApi.getSessions(),
+          future: DroidKaigiApi.getSessions(), // 前述のFuture<T>を設定
           builder: (BuildContext context, AsyncSnapshot<Sessions> snapshot) {
-            if (!snapshot.hasData) {
-              // データ無ければ空表示
-              return new Container();
-            }
-
-            // 略(StatelessWidgetのListを生成する)
+            // ListViewに追加するセクションのWidgetを設定
+            var items = new List<StatelessWidget>();
+            snapshot.data.sessions.forEach((session) {
+              items.add(new _SectionItem(session.startsAt));
+            });
 
             // ListViewの生成
             return new ListView.builder(
@@ -151,16 +153,12 @@ class _SessionsPageState extends State<SessionsPage> {
                 itemCount: items.length,
                 itemBuilder: (BuildContext context, int index) => items[index]
             );
-          }
-      ),
-    );
-  }
-}
+//}
 
-// カスタムしたStatelessWidgetを返却
+//list[state][セクションのWidget][Dart]{
 class _SectionItem extends StatelessWidget {
   const _SectionItem(this.date);
-
+  // 各セッションの日時
   final DateTime date;
 
   @override
@@ -178,18 +176,15 @@ class _SectionItem extends StatelessWidget {
             child: new Center(
               // 日時をテキスト表示する
               child: new Text(dateFormat.format(date)),
-            ),
-          )
-        ]
-    );
-  }
-}
+            )
 //}
+
+//pagebreak
 
 === 完成したアプリのスクリーンショット
 リポジトリのプロジェクトを実行するとこのように動作します。@<fn>{github}
 
-//image[AppScreenshot][スクリーンショット][scale=0.40]{
+//image[AppScreenshot][スクリーンショット][scale=0.45]{
 //}
 
 == まとめ: Flutterやってみて思ったこと
@@ -197,7 +192,7 @@ class _SectionItem extends StatelessWidget {
  * Dart初心者すぎてわからないことが多かったが、Dart／Flutterの公式サイトのドキュメントが充実していて、ドキュメント読めば良いので助かった。
  * 実行時エラーが起きるとアプリ内の背景が真っ赤になり、ちょっとしたスリルを味わえる。
 
-//image[RunTimeError][(おまけ)スリルのある実行時エラー][scale=0.40]{
+//image[RunTimeError][(おまけ)スリルのある実行時エラー][scale=0.45]{
 //}
 
-//footnote[github][公開リポジトリ: https://github.com/SAMUKEI/flutter_droidkaigi2018]
+//footnote[github][@<href>{https://github.com/SAMUKEI/flutter_droidkaigi2018}]
