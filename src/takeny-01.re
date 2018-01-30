@@ -29,7 +29,7 @@ Twitter: @bomneko_attack
 @<list>{api-connect-1}はAPIを叩いてnasneのハードウェア情報を取得し型番をトーストを使って表示するコードをOkHttpとRetrofitのみで実装したコードです。
 コールバックで結果を受け取るという一般的な非同期処理における方法ですね。
 
-//list[api-connect-1][OkHttpとRetorfitのみで実装した通信部分][kotlin]{
+//list[api-connect-1][OkHttpとRetrofitのみで実装した通信部分][kotlin]{
 api.getHardwareInfo().enqueue(object : Callback<Info> {
        override fun onResponse(call: Call<Info>, response: Response<Info>) {
            val info = response.body()
@@ -95,7 +95,7 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21.1'
 implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
 //}
 
-@<list>{gradle}のうちokhttpとretrofitは定番なので説明を省きます。
+@<list>{gradle}のうちOkhttpとRetrofitは定番なので説明を省きます。
 
 @<code>{kotlinx-coroutines-core}, @<code>{kotlinx-coroutines-android}はコルーチンを使うために必要なライブラリです。
 kotlinにおける@<code>{async/await}は他の多くの言語と異なりキーワードでも標準ライブラリの一部でもありません。
@@ -167,7 +167,7 @@ data class Hdd(val totalVolumeSize: Long,
 
 (エンドポイントはここに書くことは控えさせていただきます。@<code>{<<CENCERED>>}を適当なエンドポイントに書き換えてください)
 
-//list[nasne-api-interface][Retorfit用のinterface][kt]{
+//list[nasne-api-interface][Retrofit用のinterface][kt]{
 interface NasneApi {
     @GET("<<CENCERED>>")
     fun getHardwareVersion(): Deferred<NasneHardwareInfo>
@@ -204,7 +204,7 @@ class NasneApiClientModule {
 }
 //}
 
-OkHttpClientオブジェクトとInterfaceからAPIクライアントを作るところは今まで通りです。Retotorfitオブジェクトを作るときに指定する
+OkHttpClientオブジェクトとInterfaceからAPIクライアントを作るところは今まで通りです。Retrofitオブジェクトを作るときに指定する
 CallAdapterに@<code>{CoroutineCallAdapterFactory}を指定します。すると@<code>{Call<T>}が@<code>{Deferred<T>}に変換されます。
 
 これでクライアントの準備はできました。いよいよこれらを使って実際に画面上に出してみましょう。
