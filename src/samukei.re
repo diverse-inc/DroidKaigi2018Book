@@ -1,22 +1,24 @@
-= Flutterでクロスプラットフォームの夢を見てみた
+= Flutterやってみた
 
 == Flutter とは？
 iOS/Androidのクラスプラットフォーム開発を実現することができるGoogle発のフレームワークです。
 言語としてはDart(生きとったんかワレ)で記述していきます。
 
-== IntelliJ IDEにPluginを追加する
-IntelliJにはFlutter用の便利なプラグインが存在するため、そちらを設定します。
+== まずIDEを設定する
+IDEに甘えていく勢のため、IDEを設定していきます。
+IDEとしては、Android Studio、IntelliJ Idea CEなどありますが、今回は`IntelliJ Idea CE`にしました。
+Flutter用の便利なプラグインが存在するため、そちらを設定していきます。
 
 ==== Flutterプラグインの導入手順
-まずIntelliJを起動してPreferences > Plugins > "Browse repositories…" を選択します。
+まず`IntelliJ Idea CE`を起動してPreferences > Plugins > "Browse repositories…" を選択します。
 表示された画面で 'Flutter' と入力してFlutterプラグインをインストールします。
 
 ==== Flutter SDKの導入
 Flutterで開発するためにはSDKが必要となります。
-本来であればコマンドで行うところですが、前述のFlutterプラグインであればGUI上でインストール可能です。@<br>{}
+本来であればコマンドで行うところですが、前述のFlutterプラグインであればGUIでインストール可能です。@<br>{}
 
-===== IntelliJ上でのインストール手順
- 1. IntelliJを再起動して"Create New Project"を選択します。
+===== GUIでのインストール手順
+ 1. `IntelliJ Idea CE`を再起動して"Create New Project"を選択します。
  2. Flutterを選択するとSDKのパスの入力欄があり、その下の"Install SDK..."を選択します。
  3. ディレクトリ選択のダイアログが表示されるので、SDKをインストールしたい場所を選択します。
  4. 選択後はSDKのダウンロード、初期設定が行われるので完了を待つだけです。
@@ -40,7 +42,7 @@ Flutterで開発するためにはSDKが必要となります。
 Dartではasync/awaitがあるので活用していきます。
 通信はJavaScriptのPromiseっぽく受けることができたので、そちらに合わせました。
 
-//list[main1][class DroidKaigiApi#getSessions][Dart]{
+//list[json][class DroidKaigiApi#getSessions][Dart]{
 // 非同期処理が完了した際に返すデータをFuture<T>で表す
 static Future<Sessions> getSessions() async { // async
   var completer = new Completer();
@@ -122,7 +124,7 @@ Flutterではレイアウト用のxmlなどではなく、Viewの構築はコー
 今回はセクションの一覧を表示するので、ListViewを作成します。
 なお、一部省略していますので、全体はリポジトリを参照ください。@<fn>{github}
 
-//list[State][class _SessionsPageState][Dart]{
+//list[state][class _SessionsPageState, class _SectionItem][Dart]{
 class _SessionsPageState extends State<SessionsPage> {
 
   @override
@@ -154,6 +156,34 @@ class _SessionsPageState extends State<SessionsPage> {
     );
   }
 }
+
+// カスタムしたStatelessWidgetを返却
+class _SectionItem extends StatelessWidget {
+  const _SectionItem(this.date);
+
+  final DateTime date;
+
+  @override
+  Widget build(BuildContext context) {
+    // 日時のフォーマットを指定
+    final dateFormat = new DateFormat('MM月dd日hh時mm分');
+    // ListViewのカラムを返却する
+    return new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget> [
+          // 背景色を指定したいので、Containerを子要素として設定
+          new Container(
+            // 背景の色を指定
+            decoration: new BoxDecoration(color: Colors.lightGreen),
+            child: new Center(
+              // 日時をテキスト表示する
+              child: new Text(dateFormat.format(date)),
+            ),
+          )
+        ]
+    );
+  }
+}
 //}
 
 === 完成したアプリのスクリーンショット
@@ -162,10 +192,9 @@ class _SessionsPageState extends State<SessionsPage> {
 //image[AppScreenshot][スクリーンショット][scale=0.40]{
 //}
 
-== try Flutterで感じたこと
+== まとめ: Flutterやってみて思ったこと
  * 導入はかなり簡単で単純なUIならiOS/Androidのクロスプラットフォームでパワーを発揮しそう。ただ、UIを凝ろうとするとつらそう。
  * Dart初心者すぎてわからないことが多かったが、Dart／Flutterの公式サイトのドキュメントが充実していて、ドキュメント読めば良いので助かった。
- * 文法でいうと、Kotlinよりもモダンではないので、今後に期待。
  * 実行時エラーが起きるとアプリ内の背景が真っ赤になり、ちょっとしたスリルを味わえる。
 
 //image[RunTimeError][(おまけ)スリルのある実行時エラー][scale=0.40]{
