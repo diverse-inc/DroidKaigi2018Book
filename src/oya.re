@@ -2,9 +2,10 @@
 
 == 背景
 
-2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayoutが発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
+2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayoutが発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
 ちょうど1年前の2017年2月にConstraintLayout 1.0がリリースされ、現在では1.1.0-beta4までリリースされており、まもなく1.1.0のリリースがされようと差し迫っています。
-そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutからみたConstraintLayoutの基本的なレイアウトの操作方法と、さらにConstraintLayout 1.1.0に加わる機能について触れていきます。
+そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutからみたConstraintLayoutの基本的なレイアウトの操作方法と、さらにConstraintLayout 1.1.0で加わる新機能について触れていきます。
+
 
 == 環境
 
@@ -52,6 +53,18 @@ Xcodeでは、複数のviewを @<b>{⌘+クリック} で選択後、画面右�
 
 
 == ConstraintLayoutでできること
+
+=== Circular Positioning(1.1~)
+
+対象のviewを起点する円周上にレイアウトできる機能です。Attributes の Constraints に、@<i>{circle}, @<i>{circleAngle}, @<i>{circleRadius} の3つの項目を指定します。
+@<i>{circle} には中心にするviewのid、@<i>{circleAngle} には回転させる角度(degree)、@<i>{circleRadius} には中心からの距離(dp) をそれぞれ指定します。
+角度については、中心から上方向が角度の開始軸となり、時計回りに配置されます。(@<img>{AndroidStudioCircularPositioning})
+
+※執筆時点で、GUI上で制約を追加できませんでした。
+
+//image[AndroidStudioCircularPositioning][AndroidStudio,Circular Positioning][scale=0.40]{
+//}
+
 
 === Organize
 
