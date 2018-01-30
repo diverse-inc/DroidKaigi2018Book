@@ -1,11 +1,11 @@
-= Kotlin/Native iOS開発でハマりやすいところ
+== Kotlin/Native iOS開発でハマりやすいところ
 
 //lead{
 実際にハマって解決したことを共有します。
 Kotlin/Nativeに挑戦されるみなさまがこうしたところを踏み抜かぬよう…
 //}
 
-== FoundationだけimportしてもNSIndexPathのrowやselctionを参照できない
+=== FoundationだけimportしてもNSIndexPathのrowやselctionを参照できない
 
 @<code>{UITableView}（Androidの@<code>{ListView}や@<code>{RecyclerView}に相当）を扱う場合、@<code>{NSIndexPath}@<fn>{aboutNSIndexPath}は避けて通れません。
 //footnote[aboutNSIndexPath][@<code>{UITableView}は大枠としてセクション、その中に各行を抱えています。作成しようとしているセルはどのセクションのどの行なのか、などを表現するために@<code>{NSIndexPath}という入れ子になった配列のどこにデータがあるのかを示すための専用クラスが用意されています。]
@@ -27,7 +27,7 @@ Foundationのドキュメント@<fn>{NSIndexPathDoc}には@<code>{section}も@<c
 または初めから、@<code>{platform.Foundation.*}と@<code>{platform.UIKit.*}をimportしておいてしまうとかでも良いかもですね。
 
 
-== 構造体がCValue<T>でやってくるので扱いに困る
+=== 構造体がCValue<T>でやってくるので扱いに困る
 
 Objective-CやSwiftにはあってKotlinに無いものの一つが、構造体です。
 
@@ -48,7 +48,7 @@ Kotlinのclassのインスタンスはプラットフォームによって管理
 iOS開発においては@<code>{CGRect}や@<code>{UIEdgeInsets}などは作成専用の関数、@<code>{CGRectMake}や@<code>{UIEdgeInsetsMake}などがあるので、こちらを使用しましょう。これらの関数も構造体を@<code>{CValue<T>}型として返してくれるので、型合わせパズルに苦しまずに済みます。
 
 
-== uncheckedCastが必要になる箇所がてんこ盛り＆変な型にキャストしてもprintln()ではおかしくなっていることに気づきにくい
+=== uncheckedCastが必要になる箇所がてんこ盛り＆変な型にキャストしてもprintln()ではおかしくなっていることに気づきにくい
 
 @<code>{NSDictionary}（Java/KotlinのMapのようなもの）から値を取り出す際は必ず@<code>{uncheckedCast()}によるダウンキャストが必要になります。これはNSDictionaryが保持している値を@<code>{id}型（JavaのObject型のようなもの）として返してくるためです。
 
