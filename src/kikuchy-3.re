@@ -8,8 +8,8 @@ Kotlin/NativeでiOSのアプリを作ってみました。
 Xamarinも個人的に好きではあるのですが、開発メンバーが新しくC#を学んだり.NET系のお作法を覚える必要もなく、今までAndroid開発で使用していたKotlinを使えば両OSの開発ができるという点で、Kotlin/Nativeの方がとっつきやすいと思いました。
 
 特に弊社は、一つのサービスにつきiOSとAndroid、両方のアプリをリリースすることが多くあります。
-Multipratform ProjectとKotlin/Native pluginの補完機能が整えば、コアロジックの開発をKotlinで行うことも夢ではない…ような気がします。
-その辺も試してみたいので、特にMultipratform Projectの対応を心待ちにしています。
+Multiplatform ProjectとKotlin/Native pluginの補完機能が整えば、コアロジックの開発をKotlinで行うことも夢ではない…ような気がします。
+その辺も試してみたいので、特にMultiplatform Projectの対応を心待ちにしています。
 
 新しい技術に触れるのは苦難を伴いますが、なかなか言い表せない興奮と楽しさがあります。
 是非みなさまもKotlin/Nativeに挑戦してみてください！
