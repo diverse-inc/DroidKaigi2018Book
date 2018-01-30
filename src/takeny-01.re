@@ -42,11 +42,22 @@ api.getHardwareInfo().enqueue(object : Callback<Info> {
    })
 //}
 
-Rxを使うともうすこし簡単に書くことができますが、もっと簡単に、同期的に書くことができる方法があります。それがコルーチンです。
+正直分かり辛いです。Rxを使って書き直してみました(@<list>{api-connect-2})。
 
-コルーチンを使うと@<list>{api-connect-2}のように書くことができます。
+//list[api-connect-2][Rxを使った実装][kt]{
+api.getHardwareInfo()
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe({ info ->
+        Toast.makeText(this@MainActivity, info.productName, Toast.LENGTH_LONG).show()
+    }, { e -> Toast.makeText(this@MainActivity, "エラー", Toast.LENGTH_LONG).show() })
+//}
 
-//list[api-connect-2][コルーチンを使った実装][kotlin]{
+コールバックを使うよりわかりやすくなりました。しかし、我々の理想は非同期処理を意識しないで同期処理と同じ感覚で書くことです。
+
+そこでコルーチンを使ってみましょう！@<list>{api-connect-2}のように書くことができます。
+
+//list[api-connect-3][コルーチンを使った実装][kt]{
 launch(UI) {
     try {
         val info = api.getHardwareInfo().await()
