@@ -77,7 +77,7 @@ date: 2018-02-08
 # 日付の後ろを空白文字で区切り、任意の文字列を置くことも可能。
 history: [["2018-02-08 v1.0.0版発行"]]
 # 権利表記(配列で複数指定可)
-rights: (C) 2018 Diverse, Inc.
+rights: ["(C) 2018 Diverse, Inc.", "Android ロボットは、Google が作成および提供している作品から複製または変更したものであり、Creative Commons 3.0 Attribution ライセンスに記載された条件に従って使用しています。"]
 # description: 説明
 # subject: 短い説明用タグ(配列で複数指定可)
 # type: 書籍のカテゴリーなど(配列で複数指定可)
