@@ -9,21 +9,26 @@ YoubrideのiOS/Android/Server-sideをふんわりやってます。
 iOS/Androidのクラスプラットフォーム開発を実現することができるGoogle発のフレームワークです。
 言語としてはDart(生きとったんかワレ)で記述していきます。
 
+== どうしてFlutterをやってみたのか
+クロスプラットフォームはツラミが多い分野と遠目から見ていましたが、夢と希望に溢れているので前々から興味があり今回やってみました。
+
 == IDEを設定する
 IDEに甘えていく勢のため、最初にIDEを設定していきます。
-IDEとしては、Android Studio、IntelliJ Idea CEなどありますが、今回は`IntelliJ Idea CE`にしました。
-`IntelliJ Idea CE`向けの便利なFlutterプラグインが存在するため、そちらを設定していきます。
+IDEとしては、Android Studio、IntelliJ IDEA CEなどありますが、今回は`IntelliJ IDEA CE`にしました。
+`IntelliJ IDEA CE`向けの便利なFlutterプラグインが存在するため、そちらを設定していきます。
 
 ==== Flutterプラグインの導入手順
-`IntelliJ Idea CE`を起動してPreferences > Plugins > "Browse repositories…" を選択します。
+`IntelliJ IDEA CE`を起動してPreferences > Plugins > "Browse repositories…" を選択します。
 表示された画面で 'Flutter' と入力してFlutterプラグインをインストールします。
 
 ==== Flutter SDKの導入
 Flutterで開発するためにはSDKが必要となります。
 本来であればコマンドで行うところですが、前述のFlutterプラグインであればGUIでインストール可能です。
 
+//pagebreak
+
 ===== GUIでのインストール手順
- 1. `IntelliJ Idea CE`を再起動して"Create New Project"を選択します。
+ 1. `IntelliJ IDEA CE`を再起動して"Create New Project"を選択します。
  2. Flutterを選択するとSDKのパスの入力欄があり、その下の"Install SDK..."を選択します。
  3. ディレクトリ選択のダイアログが表示されるので、SDKをインストールしたい場所を選択します。
  4. 選択後はSDKのダウンロード、初期設定が行われるので完了を待つだけです。
@@ -31,7 +36,7 @@ Flutterで開発するためにはSDKが必要となります。
 == try Flutter
 開発環境が整ったのでいよいよFlutterに触れていきます。
 といっても、Dart/Flutter初心者なので、簡単な通信を行うアプリを作っていきます。
-ここではDroidKaigiのjsonを取ってきてセッション一覧を画面上に表示するものを作ります。@<br>{}
+ここではDroidKaigiのJSONを取ってきてセッション一覧を画面上に表示するものを作ります。@<br>{}
 なお、今回のソースコードはリポジトリに公開しています。@<fn>{github}
 
 === 新規プロジェクトの作成
@@ -126,10 +131,11 @@ class SessionsPage extends StatefulWidget {
 
 // 状態は同じファイルで定義したため、Private指定
 class _SessionsPageState extends State<SessionsPage> {
+}
 //}
 
 次にレイアウトを定義していきます。
-Flutterではレイアウト用のxmlなどではなく、Viewの構築はコードで行っています。
+Flutterではレイアウト用のXMLなどではなく、Viewの構築はコードで行っています。
 今回はセッションの一覧を表示するので、ListViewを作成します。
 なお、ページの都合により大分省略していますので、全体はリポジトリを参照ください。@<fn>{github}
 
@@ -188,7 +194,7 @@ class _SectionItem extends StatelessWidget {
 //}
 
 == まとめ: Flutterやってみて思ったこと
- * 導入はかなり簡単で単純なUIならiOS/Androidのクロスプラットフォームでパワーを発揮しそう。ただ、UIを凝ろうとするとつらそう。
+ * 導入はかなり簡単で単純なUIならiOS/Androidのクロスプラットフォームでパワーを発揮しそう。ただ、コードでレイアウトを微調整することは難しく感じたのでUIを凝ろうとするとつらそう。
  * Dart初心者すぎてわからないことが多かったが、Dart／Flutterの公式サイトのドキュメントが充実していて、ドキュメント読めば良いので助かった。
  * 実行時エラーが起きるとアプリ内の背景が真っ赤になり、ちょっとしたスリルを味わえる。
 
