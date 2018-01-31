@@ -63,7 +63,7 @@ Xcodeでは、複数のviewを @<b>{⌘+クリック} で選択後、画面右�
 === 等幅・等高の追加
 
 整列の延長で、整列を上下2つ指定すると水平中央揃え、左右2つ指定すると垂直中央揃えに整列させることができます。
-さらに、@<i>{layout_width} または @<i>{layout_height} には中心にするviewのid、 @<b>{0dp} を指定すると等幅・等高にすることができます。
+さらに、@<i>{layout_width} または @<i>{layout_height} には中心にするviewのid、 @<b>{0dp} を指定すると等幅・等高にすることができます。(@<img>{AndroidStudioEqualWidthOrHeight})
 
 //image[AndroidStudioEqualWidthOrHeight][AndroidStudio,左:等幅　右:等高][scale=0.40]{
 //}
