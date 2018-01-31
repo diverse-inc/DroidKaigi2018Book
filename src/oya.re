@@ -51,6 +51,10 @@ Xcodeでは、複数のviewを @<b>{⌘+クリック} で選択後、画面右�
 //image[AndroidStudioNewAlignmentConstraints][AndroidStudio,左:アイコンから整列追加　右:サブメニューから整列追加]{
 //}
 
+さらに、@<img>{AndroidStudioNewConstraints} で紹介しました、viewの四辺中央の白丸からドラッグして表示される緑色の矢印を、対象のviewと揃えたい辺の白丸と繋げることでも整列させることができます。(@<img>{AndroidStudioNewAlignmentConstraints2})
+
+//image[AndroidStudioNewAlignmentConstraints2][AndroidStudio,viewから整列追加][scale=0.40]{
+//}
 
 === 等幅・等高の追加
 
