@@ -4,7 +4,7 @@
 
 2016年5月、Google I/O 2016で新しいViewGroupであるConstraintLayout@<fn>{DocsConstraintLayout}が発表されました。iOSのAutoLayoutと類似した概念を持ち、AndroidでもGUIで容易にレイアウトできるようになりました。
 ちょうど1年前の2017年2月にConstraintLayout 1.0がリリースされ、現在では1.1.0-beta4までリリースされており、まもなく1.1のリリースがされようと差し迫っています。
-そこで、iOSアプリ開発に従事していてAndroidに関する知見が少ない筆者が、iOSのAutoLayoutの知見を駆使して、ConstraintLayoutを使ったGUI上の基本的なレイアウトの操作方法と、ConstraintLayout 1.1で加わる新機能について触れていきます。
+そこで本章では、普段iOSアプリ開発に従事している筆者が、iOSのAutoLayoutの知見を駆使して、ConstraintLayoutを使ったGUI上の基本的なレイアウトの操作方法と、ConstraintLayout 1.1で加わる新機能について触れていきます。
 //footnote[DocsConstraintLayout][@<href>{https://developer.android.com/reference/android/support/constraint/ConstraintLayout.html}]
 
 == 環境
@@ -33,7 +33,7 @@ Xcodeでは、viewを選択後、画面右下のアイコン @<icon>{XcodeIconNe
 //image[AndroidStudioNewConstraints][AndroidStudio,制約追加][scale=0.40]{
 //}
 
-アスペクト比率の追加変更は、選択したviewのlayout_widthまたはlayout_heightのいずれかがwrap_content以上の幅を持つ際に、Attributes窓左上に @<b>{三角} が表示されます。それをクリックすると右下に入力欄が表示され追加変更できるようになります。(@<img>{AndroidStudioNewConstraintsAspectRatio})
+アスペクト比率の追加変更は、選択したviewの @<i>{layout_width} または @<i>{layout_height} のいずれかが wrap_content 以上の幅を持つ際に、Attributes窓の左上に @<b>{三角} が表示されます。それをクリックすると右下に入力欄が表示され追加変更できるようになります。(@<img>{AndroidStudioNewConstraintsAspectRatio})
 
 //image[AndroidStudioNewConstraintsAspectRatio][AndroidStudio,アスペクト比率追加][scale=0.40]{
 //
@@ -102,7 +102,7 @@ Barrierは、指定した複数のviewの一方向に対して最大幅にガイ
 //image[XcodeSamplePopup][Xcode,ポップアップ][scale=0.40]{
 //}
 
-ここで、この閉じるボタンの配置階層を一つ上にあげようとした場合、AutoLayoutではポップアップと上記と同じように制約を追加することが可能でます。
+ここで、この閉じるボタンの配置階層を一つ上にあげた場合でも、AutoLayoutでは上記と同じようにポップアップとの制約を追加することが可能です。
 しかし、ConstraintLayoutでは親と同階層のViewにのみ制約を付与が許されていないため、階層を意識したLayoutをする必要があります。
 
 
