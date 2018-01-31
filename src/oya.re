@@ -38,6 +38,10 @@ Xcodeでは、viewを選択後、画面右下のアイコン @<icon>{XcodeIconNe
 //image[AndroidStudioNewConstraintsAspectRatio][AndroidStudio,アスペクト比率追加][scale=0.40]{
 //
 
+//texequation{
+\clearpage
+//}
+
 
 === 整列の追加
 
