@@ -2,6 +2,7 @@ PREDEF:
   - preface.re
 
 CHAPS:
+  - samukei.re
   - oya.re
   - kikuchy-0.re
   - kikuchy-1.re
