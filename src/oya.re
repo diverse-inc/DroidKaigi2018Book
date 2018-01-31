@@ -63,8 +63,11 @@ TODO: Chainの説明
 
 AutoLayoutでは、制約毎にPriorityを 1~1000 の数値で指定して適用する制約に優先度を付与することができますが、ConstraintLayoutでは同種の制約を複数付与することができず、制約自体にPriorityの概念がありません。
 しかし、ConstraintLayout 1.1で Barriar@<fn>{DocsBarriar} が追加されました。
+Barrierは、指定した複数のviewの一方向に対して最大幅にガイドラインを維持してくれるものです。
+@<img>{AndroidStudioBarrier} は緑のviewとのviewの右側にBarrierを追加した例ですが、右側の赤のviewは緑と青の最大幅に合わせてレイアウトできます。
 
-TODO: Barrierの説明・サンプル
+//image[AndroidStudioBarrier][AndroidStudio,Barrierサンプル]{
+//}
 
 //footnote[DocsBarriar][@<href>{https://developer.android.com/reference/android/support/constraint/Barrier.html}]
 
@@ -101,4 +104,4 @@ TODO: Barrierの説明・サンプル
 
 ConstraintLayoutを使って、Androidの基本的なレイアウトの操作方法を理解することができました。
 コードに触れることなくGUIのみで操作できることで、デザイナーなどの非エンジニアでも作業することへの敷居がだいぶ低くなったのではないでしょうか？。
-また、ConstraintLayoutには本章で触れなかった機能がまだあります。まだConstraintLayoutに触れていない方は、ぜひお手元のAndroidStudioで試してみてください。
+また、ConstraintLayoutには本章で触れなかった機能があります。まだConstraintLayoutに触れていない方は、ぜひお手元のAndroidStudioで試してみてください。
