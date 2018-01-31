@@ -16,12 +16,12 @@
 ……あまりご存知でない方が多いですよね！　知ってました！！
 
 Diverseは、時代に合わせた「出会い」のインフラを作り、多くの人がインターネットをきっかけに出会える社会を作ることを指向する会社です。
-現在はカジュアルデーティングサービスのYYC@<fn>{yyc}, Poiboy@<fn>{poi}, swish@<fn>{swish}、婚活サービスのyoubride@<fn>{yb}といったオンラインサービス、街コンのecle@<fn>{ecle}、デートコーディネートサービスのtailor@<fn>{tailor}といったオフラインサービス、性と恋愛のメディアAM@<fn>{am}などなどを展開しております。
+現在はカジュアルデーティングサービスのYYC@<fn>{yyc}, Poiboy@<fn>{poi}, swish@<fn>{swish}、婚活サービスのyoubride@<fn>{yb}といったオンラインサービス、婚活パーティーのYUCO.@<fn>{yuko}、デートコーディネートサービスのtailor@<fn>{tailor}といったオフラインサービス、性と恋愛のメディアAM@<fn>{am}などなどを展開しております。
 //footnote[yyc][@<href>{http://yyc.co.jp/}]
 //footnote[poi][@<href>{http://poiboy.jp/}]
 //footnote[swish][@<href>{https://swish-app.jp/}]
 //footnote[yb][@<href>{http://youbride.jp/}]
-//footnote[ecle][@<href>{http://ecle.jp/}]
+//footnote[yuko][@<href>{https://party.youbride.jp/}]
 //footnote[tailor][@<href>{https://tailor.style/}]
 //footnote[am][@<href>{https://am-our.com/}]
 
