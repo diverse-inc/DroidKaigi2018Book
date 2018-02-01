@@ -2,9 +2,13 @@ PREDEF:
   - preface.re
 
 CHAPS:
-  - [章タイトル]:
-    - someone-0.re
-    - someone-1.re
+  - samukei.re
+  - oya.re
+  - kikuchy-0.re
+  - kikuchy-1.re
+  - kikuchy-2.re
+  - kikuchy-3.re
+  - takeny-01.re
 
 POSTDEF:
-  - postscript.re
+  - postscript.re 

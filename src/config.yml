@@ -28,7 +28,7 @@ subtitle: "〜普段業務ではできないことをやってみた〜"
 
 # 著者名。「, 」で区切って複数指定できる
 # 読みを入れる例 aut: [{name: "青木峰郎", file-as: "アオキミネロウ"}, {name: "武藤健志", file-as: "ムトウケンシ"}, {name: "高橋征義", file-as: "タカハシマサヨシ"}, {name: "角征典", file-as: "カドマサノリ"}]
-aut: ["kikuchy", "samukei", "kumanomi", "takeny", "tokunaga"]
+aut: ["kikuchy", "samukei", "kumanomi", "Yoshihisa", "tokunaga"]
 
 # イラストレータ
 ill: ["hinofu"]
@@ -77,7 +77,7 @@ date: 2018-02-08
 # 日付の後ろを空白文字で区切り、任意の文字列を置くことも可能。
 history: [["2018-02-08 v1.0.0版発行"]]
 # 権利表記(配列で複数指定可)
-rights: (C) 2018 Diverse, Inc.
+rights: ["(C) 2018 Diverse, Inc.", "Android ロボットは、Google が作成および提供している作品から複製または変更したものであり、Creative Commons 3.0 Attribution ライセンスに記載された条件に従って使用しています。"]
 # description: 説明
 # subject: 短い説明用タグ(配列で複数指定可)
 # type: 書籍のカテゴリーなど(配列で複数指定可)
@@ -221,8 +221,8 @@ epubmaker:
   #
   # NCX目次の見出しレベルごとの飾り(配列で設定)。EPUB3ではNCXは作られない
   # ncxindent:
-  #- 
-  #- - 
+  #-
+  #- -
   # フックは、各段階で介入したいときのプログラムを指定する。自動で適切な引数が渡される
   # プログラムには実行権限が必要
   # ファイル変換処理の前に実行するプログラム。スタイルシートのコンパイルをしたいときなどに利用する。
@@ -324,3 +324,4 @@ pdfmaker:
   # 奥付を作成するか。trueを指定するとデフォルトの奥付、ファイル名を指定するとそれがcolophon.htmlとしてコピーされる
   colophon: true
   # pdfmaker:階層を使うものはここまで
+  footnotetext: true
