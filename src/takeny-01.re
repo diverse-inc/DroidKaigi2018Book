@@ -114,7 +114,7 @@ implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimenta
 kotlinにおける@<code>{async/await}は他の多くの言語と異なりキーワードでも標準ライブラリの一部でもありません。
 @<code>{kotlinx-coroutines-core}はコルーチンそのものを使うためのライブラリ、@<code>{kotlinx-coroutines-android}はAndroidに依存した実装を含んでいます。
 
-次の@<code>{retrofit2-kotlin-coroutines-experimental-adapter}はRetorofit2でコルーチンを扱うためのアダプターでJake神が開発し公開しています。
+次の@<code>{retrofit2-kotlin-coroutines-experimental-adapter}はRetrofit2でコルーチンを扱うためのアダプターでJake神が開発し公開しています。
 とても薄いライブラリなのでコルーチンをある程度学習したら一度読んでみるとよいでしょう。
 
 あとは適当にサポートライブラリなど他に使いたいライブラリがあれば追加してsyncすれば準備完了です。
@@ -159,7 +159,7 @@ nasneはPS4やアプリのクライアントを使って確認する他にnasne�
   }
 //}
 
-これをJsonからオブジェクトに変換するためのクラスを定義します。Kotlinには@<code>{data class}があるのですっきり定義することができます。
+このJSONからオブジェクトに変換するためのクラスを定義します。Kotlinには@<code>{data class}があるのですっきり定義することができます。
 なお、HDD情報については使わない項目もあるので今回必要なもののみ定義しています。
 
 //list[nasne-hardware-info-class][ハードウェア情報クラス][kt]{
@@ -175,7 +175,7 @@ data class Hdd(val totalVolumeSize: Long,
 //}
 
 次にHttpクライアントを実装していきます。
-まずはRetorofitのInterface(@<list>{nasne-api-interface})です。基本的にはRxJavaを使った場合と変わりませんが戻り値の型は@<code>{Deferred<T>}を指定します。
+まずはRetrofitのInterface(@<list>{nasne-api-interface})です。基本的にはRxJavaを使った場合と変わりませんが戻り値の型は@<code>{Deferred<T>}を指定します。
 @<code>{Deferred<T>}をawaitすると値が返ってくるまでコルーチンが中断されます。
 
 (エンドポイントはここに書くことは控えさせていただきます。@<code>{<<CENCERED>>}を適当なエンドポイントに書き換えてください)
