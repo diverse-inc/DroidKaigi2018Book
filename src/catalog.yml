@@ -2,14 +2,14 @@ PREDEF:
   - preface.re
 
 CHAPS:
-  - samukei.re
-  - oya.re
-  - kumanomi-0.re
   - kikuchy-0.re
   - kikuchy-1.re
   - kikuchy-2.re
   - kikuchy-3.re
+  - oya.re
+  - kumanomi-0.re
   - takeny-01.re
+  - samukei.re
 
 POSTDEF:
   - postscript.re 
