@@ -1,6 +1,6 @@
 = OkHttp3+Retrofit2+Kotlin Coroutineでつくるnasneクライアント最初の一歩
 //lead{
-AndroidでHTTPによるAPI通信を行うときに使うライブラリは OkHttp3, Retrofit2そしてRxJavaの組み合わせが定番です。
+AndroidでHTTPによるAPI通信を行うときに使うライブラリは OkHttp3とRetrofit2の組み合わせが多く、それにコールバック地獄をなんとかしようとRxJavaを使う、ということが多いと思います。
 
 RxJavaを使うと用いて通信における非同期処理をPromiseパターンを使って簡単に書くことができます。
 しかし、それでもできあがるコードは同期的な書き方と比べれば直感的ではなく、さらに複数のAPIを同時に叩いて結果を使う、といったようなパターンになるとオペレータを駆使することになりその知識も必要になります。
@@ -9,7 +9,7 @@ RxJavaを使うと用いて通信における非同期処理をPromiseパター�
 ただし、本章執筆中(1/30現在)の最新の安定版であるKotlin1.2ではExperimentalで提供されておりプロダクトへの投入は勇気が必要です。
 しかし実験的提供でありながらProduct Readyであることが宣言され、1.3ではいよいよExperimentalが外れる予定でとりあえず簡単な使い方を知って勉強し始めるにはちょうどいいタイミングかもしれません。
 
-そこで本章ではコルーチンの簡単な説明とnasneのAPIを叩いてハードウェア情報や内蔵HDDの情報を取得するクライアントアプリをOkHttp3+Retrofit2+Coroutineを使って作ってみた話を書きます。
+そこで本章ではコルーチンの簡単な説明とnasne@<fn>{nasne-r}のAPIを叩いてハードウェア情報や内蔵HDDの情報を取得するクライアントアプリをOkHttp3+Retrofit2+Coroutineを使って作ってみた話を書きます。
 //}
 
 //footnote[nasne-r][本文中に出てくる"PS4", "nasne(ナスネ)"および"torne(トルネ)"は株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。]
@@ -114,8 +114,9 @@ implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimenta
 kotlinにおける@<code>{async/await}は他の多くの言語と異なりキーワードでも標準ライブラリの一部でもありません。
 @<code>{kotlinx-coroutines-core}はコルーチンそのものを使うためのライブラリ、@<code>{kotlinx-coroutines-android}はAndroidに依存した実装を含んでいます。
 
-次の@<code>{retrofit2-kotlin-coroutines-experimental-adapter}はRetrofit2でコルーチンを扱うためのアダプターでJake神が開発し公開しています。
+次の@<code>{retrofit2-kotlin-coroutines-experimental-adapter}はRetrofit2でコルーチンを扱うためのアダプターでJake神が開発し公開しています@<fn>{coroutine-adapter}。
 とても薄いライブラリなのでコルーチンをある程度学習したら一度読んでみるとよいでしょう。
+//footnote[coroutine-adapter][@<href>{https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter}]
 
 あとは適当にサポートライブラリなど他に使いたいライブラリがあれば追加してsyncすれば準備完了です。
 
