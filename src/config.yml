@@ -108,7 +108,7 @@ stylesheet: ["sample.css"]
 # htmlversion: 4
 
 # 目次として抽出する見出しレベル
-toclevel: 3
+toclevel: 2
 
 # 採番の設定。採番させたくない見出しには「==[nonum]」のようにnonum指定をする
 #
@@ -126,7 +126,7 @@ secnolevel: 2
 # part_secnolevel: 1
 
 # 本文中に目次ページを作成するか。省略した場合はnull (作成しない)
-# toc: true
+toc: true
 
 # EPUB2標準の目次(NCX)以外に物理目次ファイルを作成するか。省略した場合はnull (作成しない)
 # ePUB3においてはこの設定によらず必ず作成される
