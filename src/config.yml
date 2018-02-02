@@ -283,7 +283,7 @@ epubmaker:
 # texstyle: samplemacro
 #
 # LaTeX用のdocumentclassを指定する
-# texdocumentclass: ["jsbook", "uplatex,oneside"]
+texdocumentclass: ["jsbook", "b5j,uplatex,twoside"]
 #
 # LaTeX用のコマンドを指定する
 # texcommand: "uplatex"
