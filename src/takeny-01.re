@@ -33,15 +33,18 @@ Twitter: @bomneko_attack
 
 //list[api-connect-1][OkHttpとRetrofitのみで実装した通信部分][kotlin]{
 api.getHardwareInfo().enqueue(object : Callback<Info> {
-       override fun onResponse(call: Call<Info>, response: Response<Info>) {
-           val info = response.body()
-           val productName: String = (info?.productName) ?: "NULL"
-           Toast.makeText(this@MainActivity, productName, Toast.LENGTH_LONG).show()
-       }
-       override fun onFailure(call: Call<Info>, t: Throwable) {
-           Toast.makeText(this@MainActivity, "エラー", Toast.LENGTH_LONG).show()
-       }
-   })
+    override fun onResponse(call: Call<Info>,
+                            response: Response<Info>) {
+        val info = response.body()
+        val productName: String = (info?.productName) ?: "NULL"
+        Toast.makeText(this@MainActivity,
+                       productName, Toast.LENGTH_LONG).show()
+    }
+    override fun onFailure(call: Call<Info>, t: Throwable) {
+        Toast.makeText(this@MainActivity,
+                       "エラー", Toast.LENGTH_LONG).show()
+    }
+})
 //}
 
 正直分かり辛いです。Rxを使って書き直してみました(@<list>{api-connect-2})。
@@ -51,8 +54,12 @@ api.getHardwareInfo()
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe({ info ->
-        Toast.makeText(this@MainActivity, info.productName, Toast.LENGTH_LONG).show()
-    }, { e -> Toast.makeText(this@MainActivity, "エラー", Toast.LENGTH_LONG).show() })
+        Toast.makeText(this@MainActivity,
+                       info.productName, Toast.LENGTH_LONG).show()
+    }, { e ->
+           Toast.makeText(this@MainActivity,
+                          "エラー", Toast.LENGTH_LONG).show()
+    })
 //}
 
 コールバックを使うよりわかりやすくなりました。しかし、我々の理想は非同期処理を意識しないで同期処理と同じ感覚で書くことです。
@@ -63,9 +70,12 @@ api.getHardwareInfo()
 launch(UI) {
     try {
         val info = api.getHardwareInfo().await()
-        Toast.makeText(this@MainActivity, info.productName, Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MainActivity,
+                       info.productName,
+                       Toast.LENGTH_LONG).show()
     } catch(e: Exception) {
-      Toast.makeText(this@MainActivity, "エラー", Toast.LENGTH_LONG).show()
+      Toast.makeText(this@MainActivity,
+                     "エラー", Toast.LENGTH_LONG).show()
     }
 }
 //}
@@ -86,7 +96,7 @@ launch(UI) {
 
 Android Studioを起動し新しくプロジェクトを作ります(私はEmpty Activityを使用)。
 
-通信を行うので@<code>{<uses-permission android:name="android.permission.INTERNET" />}と依存ライブラリを追加します。
+通信を行うので@<code>{android.permission.INTERNET}パーミッションと依存ライブラリを追加します。
 
 追加するライブラリは
 
@@ -99,13 +109,20 @@ Android Studioを起動し新しくプロジェクトを作ります(私はEmpty
 App Moduleのbuild.gradleに以下のように追記します。バージョン指定は特に問題がなければその時点での最新バージョンでOKです。
 
 //list[gradle][build.gradleに追加するライブラリ群][Gradle]{
-implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21.1'
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21.1'
-implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+implementation 'com.squareup.okhttp3:↙
+okhttp:3.9.1'
+implementation 'com.squareup.okhttp3:↙
+logging-interceptor:3.9.1'
+implementation 'com.squareup.retrofit2:↙
+retrofit:2.3.0'
+implementation 'com.squareup.retrofit2:↙
+converter-gson:2.3.0'
+implementation 'org.jetbrains.kotlinx:↙
+kotlinx-coroutines-core:0.21.1'
+implementation 'org.jetbrains.kotlinx:↙
+kotlinx-coroutines-android:0.21.1'
+implementation 'com.jakewharton.retrofit:↙
+retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
 //}
 
 @<list>{gradle}のうちOkhttpとRetrofitは定番なので説明を省きます。
@@ -168,7 +185,8 @@ data class Hardware(val hardwareVersion: Int, val productName: String)
 //}
 
 //list[nasne-hdd-info-class][HDD情報クラス][kt]{
-data class NasneHddInfo(@SerializedName("HDD") val hdd: Hdd, val errorCode: Int)
+data class NasneHddInfo(@SerializedName("HDD") val hdd: Hdd,
+　　　　　　　　　　　　　　 val errorCode: Int)
 data class Hdd(val totalVolumeSize: Long,
     val freeVolumeSize: Long,
     val usedVolumeSize: Long,
@@ -193,6 +211,8 @@ interface NasneApi {
 
 次にHttpクライアントやRetrofitのインスタンスを作るクラスを用意します(@<list>{client-module})。
 
+//pagebreak
+
 //list[client-module][ネットワーククライアントクラス][kt]{
 class NasneApiClientModule {
     fun provideHttpClientForNasneApi(isDebug: Boolean): OkHttpClient =
@@ -206,7 +226,8 @@ class NasneApiClientModule {
             })
             .build()
 
-    fun provideRetrofitForNasneApi(httpClient: OkHttpClient, baseURL: String): Retrofit =
+    fun provideRetrofitForNasneApi(httpClient: OkHttpClient,
+      　　　　　　　　　　　　　　　　　baseURL: String): Retrofit =
         Retrofit.Builder()
             .client(httpClient).baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -232,26 +253,32 @@ CallAdapterに@<code>{CoroutineCallAdapterFactory}を指定します。すると
 
 IPアドレスを入力し取得ボタンをタップすると型番、世代、ファイルシステム、合計容量、使用容量、空き容量が表示される簡単なアプリです。
 
-//pagebreak
-
 //list[main-activity-click][取得ボタンをタップしたときのListenerの実装][kt]{
   nasneGetInfoButton.setOnClickListener {
-      val baseUrl = "http://%s:64210".format(nasneIpAddressEditText.text.toString())
+      val baseUrl = "http://%s:64210"
+                        .format(nasneIpAddressEditText.text.toString())
       val retrofit = networkModule
           .provideRetrofitForNasneApi(httpClient, baseUrl)
       val api = networkModule.provideNasneApi(retrofit)
       launch(UI) {
           try {
-              val hardwareInfo = api.getHardwareVersion().await()
-              val hddInfo = api.getInternalHddInfo().await().hdd
+              val hardwareInfo = api.getHardwareVersion()
+                                    .await()
+              val hddInfo = api.getInternalHddInfo()
+                                .await().hdd
               nasneModelName.text = hardwareInfo.productName
-　　　　　　    nasneModelVersion.text = hardwareInfo.hardwareVersion.toString()
+　　　　　　    nasneModelVersion.text = hardwareInfo.hardwareVersion
+                                           .toString()
               nasneFileSystem.text = hddInfo.format
-              nasneStorageTotalVolume.text = hddInfo.totalVolumeSize.toString()
-              nasneStorageFreeVolume.text = hddInfo.freeVolumeSize.toString()
-              nasneStorageUsageVolume.text = hddInfo.usedVolumeSize.toString()
+              nasneStorageTotalVolume.text = hddInfo.totalVolumeSize
+                                                 .toString()
+              nasneStorageFreeVolume.text = hddInfo.freeVolumeSize
+                                                .toString()
+              nasneStorageUsageVolume.text = hddInfo.usedVolumeSize
+                                                .toString()
           } catch (e: HttpException) {
-              Toast.makeText(this@MainActivity, "ERROR!", Toast.LENGTH_LONG).show()
+              Toast.makeText(this@MainActivity,
+                             "ERROR!", Toast.LENGTH_LONG).show()
           }
   　　}
   }
