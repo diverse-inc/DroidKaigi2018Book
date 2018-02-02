@@ -72,7 +72,8 @@ static Future<Sessions> getSessions() async { // async
           // 1. レスポンス(UTF8)をJSON変換する
           // 2. JSONをSessionにパースする
           // 3. Completerの処理を完了させる。
-          .onDone(() => completer.complete(Sessions.parse(JSON.decode(result))));
+          .onDone(() =>
+            completer.complete(Sessions.parse(JSON.decode(result))));
         }
       })
       .catchError((e) => print(e) }); // エラー処理(雑に表示のみ)
@@ -146,7 +147,8 @@ class _SessionsPageState extends State<SessionsPage> {
     return new Scaffold(
       body: new FutureBuilder<Sessions>(
           future: DroidKaigiApi.getSessions(), // 前述のFuture<T>を設定
-          builder: (BuildContext context, AsyncSnapshot<Sessions> snapshot) {
+          builder: (BuildContext context,
+                AsyncSnapshot<Sessions> snapshot) {
             // ListViewに追加するセクションのWidgetを設定
             var items = new List<StatelessWidget>();
             snapshot.data.sessions.forEach((session) {
@@ -157,7 +159,8 @@ class _SessionsPageState extends State<SessionsPage> {
             return new ListView.builder(
                 padding: new EdgeInsets.all(8.0),
                 itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) => items[index]
+                itemBuilder:
+                  (BuildContext context, int index) => items[index]
             );
 //}
 
