@@ -83,7 +83,7 @@ Objective-Cをやっていればわかる、かなり初歩的な間違いでは
 
 === 一部の定数を参照できない
 
-Cocoa API（に限らずCobjective-C系の古めのライブラリ）では何かしらの処理のオプションを、特定のkeyを保持したNSDictionaryで指定することがあります。
+Cocoa API（に限らずObjective-C系の古めのライブラリ）では何かしらの処理のオプションを、特定のkeyを保持したNSDictionaryで指定することがあります。
 例えば@<code>{NSAttributedString}の@<code>{initWithString:attributes:}の@<code>{attributes}などです。
 
 @<code>{NSAttributedString}は装飾された文字列を表現するわけですが、それを作成する際に@<code>{attributes}に@<code>{NSAttrbutedStringKey}型の値（実体はNSString、KotlinからはString型として見える。enumのように定数が複数定義されている）をキーとして、どのような装飾をするのかを指定します。
