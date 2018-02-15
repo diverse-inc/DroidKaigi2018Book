@@ -121,6 +121,7 @@ Dartには "source_gen" というデータ型のシリアライザ／デシリ�
 === 画面の実装
 UIはWidgetとWidgetの状態から構築されます。
 //footnote[Widget][WidgetにはStatefulWidget(状態を持つWidget)とStatelessWidget(状態を持たないWidget)があります。・・・が今回は触れません。]
+//footnote[DroidKaigi][Widgetなどの話は、Konifarさんの@<href>{http://konifar.hatenablog.com/entry/2018/02/11/081031, DroidKaigi2018で発表したFlutterアプリの話のスライド補足}を参照すると理解が深まります。]
 今回はSessionを表示するので、まずはSessionのWidget、Stateを定義します。
 
 //list[StatefulWidget][class SessionsPage][Dart]{
@@ -196,10 +197,11 @@ class _SectionItem extends StatelessWidget {
 //image[AppScreenshot][スクリーンショット][scale=0.45]{
 //}
 
-== まとめ: Flutterやってみて思ったこと
+== まとめ
  * 導入はかなり簡単で単純なUIならiOS/Androidのクロスプラットフォームでパワーを発揮しそう。ただ、コードでレイアウトを微調整することは難しく感じたのでUIを凝ろうとするとつらそう。
  * Dart初心者すぎてわからないことが多かったが、Dart／Flutterの公式サイトのドキュメントが充実していて、ドキュメント読めば良いので助かった。
- * 実行時エラーが起きるとアプリ内の背景が真っ赤になり、ちょっとしたスリルを味わえる。
+ * コードの変更が即座に画面に適用されるので、スクリプトでの開発に近い体験があった。
+ * 実行時エラーが起きるとアプリ内の背景が真っ赤になり、ちょっとしたスリル・・・
 
 //image[RunTimeError][(おまけ)スリルのある実行時エラー][scale=0.45]{
 //}
