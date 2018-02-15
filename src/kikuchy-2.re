@@ -80,3 +80,40 @@ Objective-Cのラインタイムにおいて、クラスとはCの構造体の�
 とりあえず、「NSDictionaryにはオブジェクト型しか格納できない」「NSIntegerはオブジェクトではない」ということは注意しましょう。
 Objective-Cをやっていればわかる、かなり初歩的な間違いではあるのですが…
 
+
+=== 一部の定数を参照できない
+
+Cocoa API（に限らずCobjective-C系の古めのライブラリ）では何かしらの処理のオプションを、特定のkeyを保持したNSDictionaryで指定することがあります。
+例えば@<code>{NSAttributedString}の@<code>{initWithString:attributes:}の@<code>{attributes}などです。
+
+@<code>{NSAttributedString}は装飾された文字列を表現するわけですが、それを作成する際に@<code>{attributes}に@<code>{NSAttrbutedStringKey}型の値（実体はNSString、KotlinからはString型として見える。enumのように定数が複数定義されている）をキーとして、どのような装飾をするのかを指定します。
+
+すなわち、@<code>{NSAttrbutedStringKey}の定数を参照できないと文字列の修飾ができないわけです。
+例えば一部のフォントサイズを変えたくて、@<code>{NSFontAttributeName}を使うとします。
+
+//list[attributedfont][フォントサイズを指定する][kt]{
+// あとでNSDictionaryに変換する
+val dic = mapOf(NSFontAttributeName, UIFont.systemFontOfSize(18.0f))
+//}
+
+なんと@<code>{NSFontAttributeName}を参照した時点で例外が生じます。
+
+//list[notimplemented][NSFontAttributeNameを参照すると発生する例外][kt]{
+Uncaught Kotlin exception: kotlin.NotImplementedError:
+    An operation is not implemented.
+        （中略）
+        at 5   DroidKaigi2018
+            0x0000000102984bd8 kfun:kotlin.NotImplementedError.
+            <init>(kotlin.String)Reference + 12
+        at 6   DroidKaigi2018
+            0x0000000102984bac kfun:kotlinx.cinterop.
+            <get-value>@kotlinx.cinterop.
+            ObjCNotImplementedVar<#GENERIC>.()Reference + 72
+        at 7   DroidKaigi2018
+            0x00000001029d7538 kfun:platform.UIKit.
+            <get-NSStrokeColorAttributeName>()Reference + 56
+        （後略）
+//}
+
+他の@<code>{NSAttributedStringKey}でも同様に@<code>{NotImplementedError}が生じます。コンパイルは通るのに…
+どうやら現バージョンのKotlin/Nativeでは、@<code>{NSAttributedStringKey}を参照できないようです。将来的な改善を待ちましょう…

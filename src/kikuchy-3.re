@@ -23,6 +23,7 @@ Multiplatform ProjectとKotlin/Native pluginの補完機能が整えば、コア
  * Core Dataちゃんと使ってみたかった
  * Objective-Cとのブリッジがどんな仕組みになっているのかちゃんと調べたかった
  * GCDを使ったCoroutine contextの実装に挑戦してみたかった
+ * ストアリリースしたかった
  
 
 #@#=== 総括
